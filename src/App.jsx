@@ -1,12 +1,12 @@
-import './App.css'
+import React from 'react';
+import StickyNavbar from './components/header'; // Ajusta la ruta según la ubicación de tu archivo header.js
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <h1 className='text-center'>Hello world</h1>
-    </>
-  )
-}
+    <div>
+      <StickyNavbar />
+    </div>
+  );
+};
 
-export default App
+export default App;
