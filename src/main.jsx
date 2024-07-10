@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import RegisterForm from './components/RegisterForm.jsx'
+import LoginForm from './components/LoginForm.jsx'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <RegisterForm />
+      },
+      {
+        path: '/login',
+        element: <LoginForm />
       }
     ]
   }
