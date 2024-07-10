@@ -5,23 +5,30 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
+import RegisterForm from './components/RegisterForm.jsx'
 
-const router = createBrowserRouter([{
-  element: <App />,
-  children: [
-    {
-      path: "/",
-      element: <Home />
-    },
-    {
-      path: "/about",
-      element: <About />
-    }
-  ]
-}])
+const router = createBrowserRouter([
+  {
+    element: <App />,
+    children: [
+      {
+        path: '/',
+        element: <Home />
+      },
+      {
+        path: '/about',
+        element: <About />
+      },
+      {
+        path: '/register',
+        element: <RegisterForm />
+      }
+    ]
+  }
+])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
 )
