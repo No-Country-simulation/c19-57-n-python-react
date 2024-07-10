@@ -6,6 +6,7 @@ import {
     Button,
     IconButton,
 } from "@material-tailwind/react";
+import { NavLink } from "react-router-dom";
 
 export function StickyNavbar() {
     const [openNav, setOpenNav] = React.useState(false);
@@ -25,7 +26,7 @@ export function StickyNavbar() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <a href="/" className="flex items-center">
                     Inicio
                 </a>
             </Typography>
@@ -35,9 +36,9 @@ export function StickyNavbar() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <NavLink to="/about" className="flex items-center">
                     Quienes somos
-                </a>
+                </NavLink>
             </Typography>
             <Typography
                 as="li"
