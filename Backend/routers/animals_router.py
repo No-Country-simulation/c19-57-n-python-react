@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, UploadFile, Form, File
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, Form, File, Response, status
 from sqlalchemy.orm import Session
 from Backend.schemas.scheme_animals import create_animal_base
 from Backend.config.data_base import localsesion
@@ -21,46 +21,68 @@ def get_db():
         db.close
 
 now = datetime.now()  
-   
-@animal_root.post("/pets/register") #Obtiene datos desde formulario
-async def register_pets(create_at: str = now.strftime("%m-%d-%Y"), name: str = Form(...), animal_type: str = Form(...),
-    race: str = Form(...), year: int = Form(...), history: str = Form(...), gender: str = Form(...), size: int = Form(...), 
-    characteristics: str = Form(...), location: str = Form(...), status: int = Form(...),
-    imagen_profile: UploadFile = File(...), imagen_details: List[UploadFile] = File(...), db: Session = Depends(get_db)):
-    IMEGEN_DIR = "imagenes/perfil/" 
-    IMEGEN_DIR2 = "imagenes/details/"
+
+
+#Obtiene datos desde formulario
+@animal_root.post("/pets/register", status_code=status.HTTP_201_CREATED) 
+async def register_pets(
+        create_at: str = now.strftime("%m-%d-%Y"),
+        name: str = Form(...),
+        animal_type: str = Form(...),
+        race: str = Form(...),
+        year: int = Form(...),
+        history: str = Form(...),
+        gender: str = Form(...),
+        size: int = Form(...), 
+        characteristics: str = Form(...),
+        location: str = Form(...),
+        status: int = Form(...),
+        imagen_profile: UploadFile = File(...),
+        imagen_details: List[UploadFile] = File(...),
+        db: Session = Depends(get_db)
     
-    get_img_profile = imagen_profile.filename 
+    ):
     
-    extension_img_profile = get_img_profile.split(".")[1] 
-    
-    lister = [] #
-    
-    for data in imagen_details:
-        lister.append(data.filename)
-    
-    if extension_img_profile == "png" or extension_img_profile == "jpeg" or extension_img_profile == "jpg":
+    try:
+        IMEGEN_DIR = "imagenes/perfil/" 
+        IMEGEN_DIR2 = "imagenes/details/"
         
-        insert_animal = create_animals(create_at= create_at, name=name, animal_type=animal_type,
-        race=race, year=year, history=history, gender=gender, size=size, characteristics=characteristics, location=location,
-        status=status, imagen_profile=get_img_profile, imagen_details=",".join(lister))
+        get_img_profile = imagen_profile.filename 
+    
+        extension_img_profile = get_img_profile.split(".")[1] 
         
-        content_img_profile = await imagen_profile.read()
+        lister = [] #
         
         for data in imagen_details:
-            img_name = data.filename
-            read_image = await data.read()
+            lister.append(data.filename)
+        
+        if extension_img_profile == "png" or extension_img_profile == "jpeg" or extension_img_profile == "jpg":
             
-            with open(f"{IMEGEN_DIR2}{img_name}", "wb") as f:
-                f.write(read_image)
+            insert_animal = create_animals(create_at= create_at, name=name, animal_type=animal_type,
+            race=race, year=year, history=history, gender=gender, size=size, characteristics=characteristics, location=location,
+            status=status, imagen_profile=get_img_profile, imagen_details=",".join(lister))
+            
+            content_img_profile = await imagen_profile.read()
+            
+            for data in imagen_details:
+                img_name = data.filename
+                read_image = await data.read()
                 
-        with open(f"{IMEGEN_DIR}{get_img_profile}", "wb") as f:
-            f.write(content_img_profile)
+                with open(f"{IMEGEN_DIR2}{img_name}", "wb") as f:
+                    f.write(read_image)
+                    
+            with open(f"{IMEGEN_DIR}{get_img_profile}", "wb") as f:
+                f.write(content_img_profile)
 
-        db.add(insert_animal)
-        db.commit()
-        return {"message":"datos cargados"}
-    raise HTTPException(status_code=401, detail="Extension no permitida")
+            db.add(insert_animal)
+            db.commit()
+            return Response(content=insert_animal.json(), media_type="application/json")
+            # return {"message":"datos cargados"}
+        else:
+            raise HTTPException(status_code=401, detail="Extension no permitida")
+        
+    except HTTPException(status_code=404, detail="Bad Request") as e:
+        raise e       
 
 
 @animal_root.get("/pets/{id}")
