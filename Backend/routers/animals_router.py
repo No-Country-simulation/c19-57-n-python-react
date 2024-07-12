@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, Form, File
 from sqlalchemy.orm import Session
 from Backend.schemas.scheme_animals import create_animal_base
 from Backend.config.data_base import localsesion
 from Backend.models import animals_model
 from Backend.models.animals_model import create_animals
 from Backend.config.data_base import engine
+from typing import List
+from datetime import datetime, date
 
 
 animals_model.base.metadata.create_all(bind=engine)
@@ -18,14 +20,75 @@ def get_db():
     finally:
         db.close
 
-      
-@animal_root.post("/pets/register", response_model=create_animal_base)
-def register_pets(animal: create_animal_base,  db: Session = Depends(get_db)):
-    insert_animal = create_animals(**animal.model_dump())
-    db.add(insert_animal)
-    db.commit()
-    return animal
+now = datetime.now()  
+   
+@animal_root.post("/pets/register") #Obtiene datos desde formulario
+async def register_pets(create_at: str = now.strftime("%m-%d-%Y"), name: str = Form(...), animal_type: str = Form(...),
+    race: str = Form(...), year: int = Form(...), history: str = Form(...), gender: str = Form(...), size: int = Form(...), 
+    characteristics: str = Form(...), location: str = Form(...), status: int = Form(...),
+    imagen_profile: UploadFile = File(...), imagen_details: List[UploadFile] = File(...), db: Session = Depends(get_db)):
+    IMEGEN_DIR = "imagenes/perfil/" 
+    IMEGEN_DIR2 = "imagenes/details/"
+    
+    get_img_profile = imagen_profile.filename 
+    
+    extension_img_profile = get_img_profile.split(".")[1] 
+    
+    lister = [] #
+    
+    for data in imagen_details:
+        lister.append(data.filename)
+    
+    if extension_img_profile == "png" or extension_img_profile == "jpeg" or extension_img_profile == "jpg":
+        
+        insert_animal = create_animals(create_at= create_at, name=name, animal_type=animal_type,
+        race=race, year=year, history=history, gender=gender, size=size, characteristics=characteristics, location=location,
+        status=status, imagen_profile=get_img_profile, imagen_details=",".join(lister))
+        
+        content_img_profile = await imagen_profile.read()
+        
+        for data in imagen_details:
+            img_name = data.filename
+            read_image = await data.read()
+            
+            with open(f"{IMEGEN_DIR2}{img_name}", "wb") as f:
+                f.write(read_image)
+                
+        with open(f"{IMEGEN_DIR}{get_img_profile}", "wb") as f:
+            f.write(content_img_profile)
 
-@animal_root.get("/pets")
-def get_pets(animal: create_animal_base, db: Session = Depends(get_db)):
-    pass
+        db.add(insert_animal)
+        db.commit()
+        return {"message":"datos cargados"}
+    raise HTTPException(status_code=401, detail="Extension no permitida")
+
+
+@animal_root.get("/pets/{id}")
+def get_pets_id(id: int, db: Session = Depends(get_db)):
+    get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
+    return get_data_animal
+
+@animal_root.get("/pets/all/")
+def get_pets_all(db: Session = Depends(get_db)):
+    get_data_animal = db.query(create_animals).all()
+    return get_data_animal
+
+@animal_root.put("/pets/editing/{id}")
+def get_pets_id(id: int, animal: create_animal_base, db: Session = Depends(get_db)):
+    get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
+    if get_data_animal is None:
+        return {"message":"ID no se encuentra registrada"}
+    else:
+        get_data_animal.name = animal.name
+        get_data_animal.animal_type = animal.animal_type
+        get_data_animal.race = animal.race
+        get_data_animal.year = animal.year
+        get_data_animal.history = animal.history
+        get_data_animal.gender = animal.gender
+        get_data_animal.size = animal.size
+        get_data_animal.characteristics = animal.characteristics
+        get_data_animal.location = animal.location
+        get_data_animal.status = animal.status
+        db.commit()
+        return {"message":"Datos actualizados!"}
+

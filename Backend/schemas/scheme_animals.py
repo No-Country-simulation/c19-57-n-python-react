@@ -6,7 +6,7 @@ from typing import Optional, List
 class create_animal_base(BaseModel): #Modelo POST
     id: Optional[int]
     create_at: str
-    name: str
+    name: str 
     animal_type: str
     race: str
     year: int
@@ -16,5 +16,3 @@ class create_animal_base(BaseModel): #Modelo POST
     characteristics: str
     location: str
     status: int
-    imgen_profile: Optional[str] = None
-    imgen_details: Optional[str] = None

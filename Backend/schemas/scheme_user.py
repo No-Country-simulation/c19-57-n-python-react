@@ -19,7 +19,9 @@ class create_user(BaseModel): #Modelo POST
 class User_in(create_user): #Modelo POST
     password: str
     
- 
+class prueba_(BaseModel):
+    name: str 
+    data: str 
 
 class login_user(BaseModel):
     email: str
