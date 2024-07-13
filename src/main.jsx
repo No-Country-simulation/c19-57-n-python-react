@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-=======
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -37,17 +31,10 @@ const router = createBrowserRouter([
     ]
   }
 ])
->>>>>>> 3df8d45cc3c7acaf82a2f764b191450a3b5e04da
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-<<<<<<< HEAD
-  <App />
-  </React.StrictMode >
-);
-=======
     <RouterProvider router={router} />
   </React.StrictMode>
 )
->>>>>>> 3df8d45cc3c7acaf82a2f764b191450a3b5e04da

@@ -43,7 +43,7 @@ export const validateRegisterForm = (values, setError) => {
   }
 
   if (values.phone.trim() === '') {
-    newErrors.phone = 'Introduce tu telefono'
+    newErrors.phone = 'Introduce tu teléfono'
     isValid = false
   }
 
