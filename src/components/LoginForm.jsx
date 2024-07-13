@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import useToken from '../hooks/useToken'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 const LoginForm = () => {
   const [values, setValues] = useState({
@@ -7,6 +10,8 @@ const LoginForm = () => {
   })
 
   const [error, setError] = useState({})
+
+  const { setToken, deleteToken } = useToken()
 
   const handleChange = (e) => {
     setValues({
@@ -43,12 +48,26 @@ const LoginForm = () => {
     return isValid
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (validateForm()) {
-      //reemplazar por la conexion al back para loguear al usuario
-      console.log(values)
+      try {
+        const response = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        })
+        const data = await response.json()
+        setToken(data)
+      } catch (error) {
+        console.error(error)
+        setError({ ...error, apiError: error.message })
+        deleteToken()
+      }
     } else {
       console.error('Ocurrio un error')
     }

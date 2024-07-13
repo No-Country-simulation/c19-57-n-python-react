@@ -7,6 +7,7 @@ import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import RegisterForm from './components/RegisterForm.jsx'
 import LoginForm from './components/LoginForm.jsx'
+import PetForm from './components/PetForm.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginForm />
+      },
+      {
+        path: '/petform',
+        element: <PetForm />
       }
     ]
   }
