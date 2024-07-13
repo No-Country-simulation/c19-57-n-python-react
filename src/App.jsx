@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // En App.jsx
 
 import React, { useState, useEffect } from 'react';
@@ -21,8 +22,15 @@ const App = () => {
   return (
     <div>
       <StickyNavbar />
+      <Outlet />
     </div>
   );
 };
 
 export default App;
+=======
+import { Outlet } from 'react-router-dom';
+import StickyNavbar from './components/header'; // Ajusta la ruta según la ubicación de tu archivo header.js
+>>>>>>> 3df8d45cc3c7acaf82a2f764b191450a3b5e04da
+
+
