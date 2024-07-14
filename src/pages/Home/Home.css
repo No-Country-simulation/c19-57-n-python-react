@@ -1,9 +1,31 @@
 .hero-container {
+  position: relative;
   width: 100%;
   height: 238px;
   background: #F9D7BD;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  max-height: 200px;
+  border-radius: 0px 0px 14px 14px;
+  
+  .hero__img {
+    height: 100%;
+    position: absolute;
+    left: 0;
 
-  .__img {
-    background: red;
+    img {
+      height: 100%;
+    }
+  }
+
+  .hero__title {
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .hero__paragraph {
+    width: 145px;
+    font-size: 12px;
   }
 }
