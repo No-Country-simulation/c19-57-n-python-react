@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { StickyNavbar } from './components/header_a'; // Ajusta la ruta según la ubicación correcta de tu archivo header.jsx
 import { Loading } from './components/loading'; // Asegúrate de que la ruta sea correcta
 import { Outlet } from 'react-router-dom';
+import { FooterWithSitemap } from './components/footer';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -19,8 +20,9 @@ const App = () => {
 
   return (
     <div>
-      <StickyNavbar />
       <Outlet />
+      <StickyNavbar />
+      <FooterWithSitemap />
     </div>
   );
 };
