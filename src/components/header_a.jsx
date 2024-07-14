@@ -22,8 +22,8 @@ export function StickyNavbar() {
         <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography
                 as="li"
-                variant="small"
-                color="blue-gray"
+                variant="medium"
+                color="black"
                 className="p-1 font-normal"
             >
                 <a href="/" className="flex items-center">
@@ -32,8 +32,8 @@ export function StickyNavbar() {
             </Typography>
             <Typography
                 as="li"
-                variant="small"
-                color="blue-gray"
+                variant="medium"
+                color="black"
                 className="p-1 font-normal"
             >
                 <NavLink to="/about" className="flex items-center">
@@ -42,12 +42,22 @@ export function StickyNavbar() {
             </Typography>
             <Typography
                 as="li"
-                variant="small"
-                color="blue-gray"
+                variant="medium"
+                color="black"
                 className="p-1 font-normal"
             >
                 <a href="#" className="flex items-center">
                     Quiero adoptar
+                </a>
+            </Typography>
+            <Typography
+                as="li"
+                variant="medium"
+                color="black"
+                className="p-1 font-normal"
+            >
+                <a href="#" className="flex items-center">
+                    Administrar usuarios
                 </a>
             </Typography>
         </ul>
@@ -61,6 +71,7 @@ export function StickyNavbar() {
                         as="a"
                         href="#"
                         className="mr-4 cursor-pointer py-1.5 font-medium"
+                        color="black"
                     >
                         Adopt Pet
                     </Typography>
