@@ -65,3 +65,71 @@ export const validateRegisterForm = (values, setError) => {
   setError(newErrors)
   return isValid
 }
+
+export const validatePetRegisterForm = (
+  values,
+  imagenProfile,
+  imagenDetails,
+  setError
+) => {
+  let isValid = true
+  const newErrors = {}
+
+  if (values.name.trim() === '') {
+    newErrors.name = 'Introduce un nombre'
+    isValid = false
+  }
+
+  if (values.animalType === 'Seleccionar' || values.animalType.trim() === '') {
+    newErrors.animalType = 'Seleccione tipo de animal'
+    isValid = false
+  }
+
+  if (values.race.trim() === '') {
+    newErrors.race = 'Introduce su raza'
+    isValid = false
+  }
+
+  if (values.year.trim() === '' || isNaN(values.year)) {
+    newErrors.year = 'Introduce su edad'
+    isValid = false
+  }
+
+  if (values.history.trim() === '') {
+    newErrors.history = 'Introduce su historial'
+    isValid = false
+  }
+
+  if (values.gender === 'Seleccionar' || values.gender.trim() === '') {
+    newErrors.gender = 'Seleccione género'
+    isValid = false
+  }
+
+  if (values.size.trim() === '' || isNaN(values.size)) {
+    newErrors.size = 'Introduce un tamaño aproximado válido (cm)'
+    isValid = false
+  }
+
+  if (values.characteristics.trim() === '') {
+    newErrors.characteristics = 'Introduce características'
+    isValid = false
+  }
+
+  if (values.location.trim() === '') {
+    newErrors.location = 'Introduce una ubicación'
+    isValid = false
+  }
+
+  if (!imagenProfile) {
+    newErrors.imagenProfile = 'Añade una imagen'
+    isValid = false
+  }
+
+  if (imagenDetails.length === 0) {
+    newErrors.imagenDetails = 'Añade aunque sea una imagen más'
+    isValid = false
+  }
+
+  setError(newErrors)
+  return isValid
+}
