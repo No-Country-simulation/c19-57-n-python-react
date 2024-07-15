@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import useToken from '../hooks/useToken'
+import { useNavigate } from 'react-router-dom'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -12,6 +13,8 @@ const LoginForm = () => {
   const [error, setError] = useState({})
 
   const { setToken, deleteToken } = useToken()
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setValues({
@@ -63,6 +66,9 @@ const LoginForm = () => {
         })
         const data = await response.json()
         setToken(data)
+
+        //redirige al home al estar logeado
+        navigate('/')
       } catch (error) {
         console.error(error)
         setError({ ...error, apiError: error.message })
@@ -106,6 +112,9 @@ const LoginForm = () => {
       <button className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'>
         Iniciar Sesion
       </button>
+      {error.apiError && (
+        <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
+      )}
     </form>
   )
 }
