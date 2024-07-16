@@ -50,3 +50,4 @@ class create_application(base):
     # another_pet = Column(Enum("Yes", "No"), nullable=False)
     # another_pet_desc = Column(String(100), nullable=True)
     # status_appli = Column(Enum("Pending", "Approved", "Rejected"), nullable=False)
+    # jj
