@@ -1,31 +1,60 @@
 .hero-container {
-  position: relative;
+  font-family: "Poppins", sans-serif;
   width: 100%;
-  height: 238px;
+  padding: 0 1rem;
   background: #F9D7BD;
   display: flex;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
-  max-height: 200px;
   border-radius: 0px 0px 14px 14px;
+  color: #002140;
   
   .hero__img {
-    height: 100%;
-    position: absolute;
-    left: 0;
+    height: 190px;
+    
+    @media screen and (width > 480px) {
+      height: 250px;
+    }
+
+    @media screen and (width > 768px) {
+      height: 420px;
+    }
 
     img {
       height: 100%;
+      object-fit: cover;
+      object-position: bottom;
+      width: auto;
     }
+  }
+  
+  .hero__presentation {
+    width: 50%;
   }
 
   .hero__title {
     font-size: 26px;
     font-weight: 600;
+    padding-bottom: 1rem;
+    
+    @media screen and (width > 480px) {
+      font-size: 30px;
+    }
+
+    @media screen and (width > 768px) {
+      font-size: 50px;
+    }
   }
 
   .hero__paragraph {
-    width: 145px;
     font-size: 12px;
+
+    @media screen and (width > 480px) {
+      font-size: 20px;
+    }
+    
+    @media screen and (width > 768px) {
+      font-size: 38px;
+    }
   }
 }
