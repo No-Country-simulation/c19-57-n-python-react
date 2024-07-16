@@ -20,8 +20,8 @@ const App = () => {
 
   return (
     <div>
-      <Outlet />
       <StickyNavbar />
+      <Outlet />
       <FooterWithSitemap />
     </div>
   );
