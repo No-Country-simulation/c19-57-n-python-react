@@ -10,17 +10,19 @@ const Home = () => {
       <Hero />
       <div className='mx-[18px] relative'>
         <SearchBar />
-        {
-          pets.map((pet, index) => (
-            <PetCard
-              key={index}
-              nombre={pet.nombre}
-              sexo={pet.sexo}
-              edad={pet.edad}
-              tamaño={pet.tamaño}
-              caracter={pet.caracter}
-            />))
-        }
+        <div className='pt-[62px] flex flex-wrap gap-5'>
+          {
+            pets.map((pet, index) => (
+              <PetCard
+                key={index}
+                nombre={pet.nombre}
+                sexo={pet.sexo}
+                edad={pet.edad}
+                tamaño={pet.tamaño}
+                caracter={pet.caracter}
+              />))
+          }
+        </div>
       </div>
     </div>
   )
