@@ -1,0 +1,44 @@
+[
+  {
+    "nombre": "Beagle",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Pequeño a mediano",
+    "caracter": "Curioso, amigable y enérgico"
+  },
+  {
+    "nombre": "Pastor Alemán",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Mediano a grande",
+    "caracter": "Inteligente, leal y protector"
+  },
+  {
+    "nombre": "Labrador Retriever",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Mediano a grande",
+    "caracter": "Amigable, juguetón y obediente"
+  },
+  {
+    "nombre": "Chihuahua",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Pequeño",
+    "caracter": "Valiente, alerta y cariñoso"
+  },
+  {
+    "nombre": "Akita Inu",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Grande",
+    "caracter": "Fiel, independiente y valiente"
+  },
+  {
+    "nombre": "Bulldog",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Mediano a grande",
+    "caracter": "Tranquilo, afectuoso y valiente"
+  }
+]
