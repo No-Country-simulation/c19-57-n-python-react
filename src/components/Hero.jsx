@@ -10,9 +10,9 @@ const Hero = () => {
       </div>
       <div className='w-1/2'>
         <h1 className='text-2xl font-semibold pb-4 sm:text-3xl md:text-5xl'>
-          Adopta
+          Adoptá.
         </h1>
-        <p className='text-sm sm:text-xl md:text-5xl'>
+        <p className='text-[12px] sm:text-xl md:text-5xl font-medium'>
           Tu calidad de vida mejora, su vida cambia.
         </p>
       </div>
