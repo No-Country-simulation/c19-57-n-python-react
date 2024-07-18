@@ -7,47 +7,20 @@ class create_application(base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     create_at = Column(Date)
-    name = Column(String)
-    last_name = Column(String)
+    name = Column(String(100))
+    last_name = Column(String(100))
     age = Column(Integer)
-    genre = Column(String)
-    email = Column(String)
+    genre = Column(Enum('F', 'M'))
+    email = Column(String(100))
     phone = Column(Integer)
-    type_appli = Column(String)
-    employm_situ = Column(String)
-    type_of_house = Column(String)
-    income_range = Column(String)
-    yard = Column(String)
+    type_appli = Column(Enum('adopcion', 'transitorio'))
+    employm_situ = Column(Enum('empleado', 'desempleado', 'pensionado'))
+    type_of_house = Column(Enum('casa', 'depto'))
+    income_range = Column(Enum('500.000-700.000', '700.001-900.000', '900.001-1.100.000', '1.100.001- y más'))
+    yard = Column(Enum('si', 'no'))
     mt2_yard = Column(Integer)
-    another_pet = Column(String)
-    another_pet_desc = Column(String)
-    status_appli = Column(String)
+    another_pet = Column(Enum('si', 'no'))
+    another_pet_desc = Column(String(100))
+    status_appli = Column(Enum('pendiente', 'aprobada', 'rechazada'))
 
 
-
-
-
-
-
-
-
-
-    # __tablename__ = "solicitudadopcion"
-    # id = Column(Integer, primary_key=True, index=True)
-    # create_at = Column(Date, nullable=False)
-    # name = Column(String(100), nullable=False)
-    # last_name = Column(String(100), nullable=False)
-    # age = Column(Integer, nullable=False)
-    # genre = Column(Enum("M", "F"), nullable=False)
-    # email = Column(String(100), nullable=False)
-    # phone = Column(Integer, nullable=False)
-    # type_appli = Column(Enum("Adoption", "Foster"), nullable=False)
-    # employm_situ = Column(Enum("Employed", "Unemployed"), nullable=False)
-    # type_of_house = Column(Enum("Apartment", "House"), nullable=False)
-    # income_range = Column(Enum("Low", "Medium", "High"), nullable=False)
-    # yard = Column(Enum("Yes", "No"), nullable=False)
-    # mt2_yard = Column(Integer, nullable=False)
-    # another_pet = Column(Enum("Yes", "No"), nullable=False)
-    # another_pet_desc = Column(String(100), nullable=True)
-    # status_appli = Column(Enum("Pending", "Approved", "Rejected"), nullable=False)
-    # jj

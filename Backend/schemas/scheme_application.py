@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
 from typing import Optional
-
-
 from pydantic import BaseModel
 from typing import Optional
 from datetime import date
@@ -21,9 +19,9 @@ class CreateApplicationBase(BaseModel):
     type_of_house: str
     income_range: str
     yard: str
-    mt2_yard: int
+    mt2_yard: Optional[int]
     another_pet: str
-    another_pet_desc: str
+    another_pet_desc: Optional[str]
     status_appli: str
 
     class Config:
@@ -48,7 +46,3 @@ class UpdateApplicationBase(BaseModel):
 
     class Config:
         from_attributes = True
-
-
-
-
