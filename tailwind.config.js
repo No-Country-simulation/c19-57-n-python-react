@@ -5,25 +5,25 @@ export default {
     fontFamily: {
       sans: ['Poppins', 'sans-serif']
     },
-    colors: {
-      blue: {
-        light: '#D6E4E8',
-        default: '#435B71',
-        darker: '#002140'
-      },
-      yellow: {
-        default: '#F9E8BD',
-        light: '#F9EFBD'
-      },
-      pink: {
-        default: '#F9D7BD'
-      },
-      green: {
-        default: '#D6E8D8',
-        light: '#E4EDE5'
-      }
-    },
     extend: {
+      colors: {
+        blue: {
+          light: '#D6E4E8',
+          default: '#435B71',
+          darker: '#002140'
+        },
+        yellow: {
+          default: '#F9E8BD',
+          light: '#F9EFBD'
+        },
+        pink: {
+          default: '#F9D7BD'
+        },
+        green: {
+          default: '#D6E8D8',
+          light: '#E4EDE5'
+        }
+      },
       fontSize: {
         '2xl': '26px',
         '2.5xl': '28px',

@@ -8,6 +8,7 @@ import About from './pages/About.jsx'
 import RegisterForm from './components/RegisterForm.jsx'
 import LoginForm from './components/LoginForm.jsx'
 import PetForm from './components/PetForm.jsx'
+import PetEditForm from './components/PetEditForm.jsx'
 
 const router = createBrowserRouter([
   {
@@ -32,12 +33,16 @@ const router = createBrowserRouter([
       {
         path: '/petform',
         element: <PetForm />
+      },
+      {
+        path: '/pets/edit/:id',
+        element: <PetEditForm />
       }
     ]
   }
 ])
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
