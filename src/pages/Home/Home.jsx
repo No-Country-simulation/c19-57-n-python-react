@@ -1,7 +1,5 @@
-import Hero from '../../components/Hero'
-import SearchBar from '../../components/SearchBar'
+import { Hero, PetCard, SearchBar } from '../../components'
 import './Home.css'
-import PetCard from '../../components/PetCard'
 import pets from '../../../data.json';
 
 const Home = () => {
