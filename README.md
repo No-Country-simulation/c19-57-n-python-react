@@ -60,3 +60,37 @@ The application is based on the RESTful (Representational State Transfer) archit
 It is an entity-relationship model
 
 ![Database](readme/model-database.png)
+
+
+### Migration in FastAPI
+
+Make changes to the models and execute them in the database.
+
+**Install Alembic:**
+
+```bash
+pip install alembic
+```
+
+**Init Alembic:**
+
+```bash
+alembic init alembic
+```
+
+**Configure alembic.ini:**
+
+```bash
+sqlalchemy.url = driver://user:password@localhost/dbname
+```
+
+**Create a migration:**
+
+```bash
+alembic revision --autogenerate -m "Cambiar nombre de columna"
+```
+
+**Execute migration:**
+```bash
+alembic upgrade head
+```

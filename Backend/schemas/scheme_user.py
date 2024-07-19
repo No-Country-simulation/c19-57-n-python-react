@@ -8,7 +8,8 @@ class create_user(BaseModel): #Modelo POST
     id: Optional[int]
     create_at: str
     name: str
-    surname: str
+    username: str
+    password: str
     year: int
     phone: str
     country: str
@@ -16,14 +17,20 @@ class create_user(BaseModel): #Modelo POST
     imgen_profile: Optional[str]
     email:str
 
-class User_in(create_user): #Modelo POST
+class user_in(create_user): #Modelo POST
     password: str
     
-class prueba_(BaseModel):
-    name: str 
-    data: str 
+
 
 class login_user(BaseModel):
     email: str
     password: str
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None        
         
