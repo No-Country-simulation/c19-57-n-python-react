@@ -7,6 +7,8 @@ from Backend.models.animals_model import create_animals
 from Backend.config.data_base import engine
 from typing import List
 from datetime import datetime, date
+from fastapi.responses import JSONResponse
+from fastapi import status
 
 
 animals_model.base.metadata.create_all(bind=engine)
@@ -81,36 +83,52 @@ async def register_pets(
         else:
             raise HTTPException(status_code=401, detail="Extension no permitida")
         
-    except HTTPException(status_code=404, detail="Bad Request") as e:
+    except HTTPException(status_code=400, detail="Bad Request") as e:
         raise e       
 
 
-@animal_root.get("/pets/{id}")
+@animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK)
 def get_pets_id(id: int, db: Session = Depends(get_db)):
-    get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
-    return get_data_animal
+    try:
+        get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
+        if get_data_animal is None:
+            return {"message":"ID no se encuentra registrada"}
+        else:
+            return JSONResponse(content=get_data_animal)
+    
+    except HTTPException(status_code=404, detail="Not found") as e:
+        raise e 
 
-@animal_root.get("/pets/all/")
+@animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
 def get_pets_all(db: Session = Depends(get_db)):
-    get_data_animal = db.query(create_animals).all()
-    return get_data_animal
+    try:
+        get_data_animal = db.query(create_animals).all()
+        return JSONResponse(content=get_data_animal)
+    
+    except HTTPException(status_code=404, detail="Not found") as e:
+        raise e 
 
-@animal_root.put("/pets/editing/{id}")
-def get_pets_id(id: int, animal: create_animal_base, db: Session = Depends(get_db)):
-    get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
-    if get_data_animal is None:
-        return {"message":"ID no se encuentra registrada"}
-    else:
-        get_data_animal.name = animal.name
-        get_data_animal.animal_type = animal.animal_type
-        get_data_animal.race = animal.race
-        get_data_animal.year = animal.year
-        get_data_animal.history = animal.history
-        get_data_animal.gender = animal.gender
-        get_data_animal.size = animal.size
-        get_data_animal.characteristics = animal.characteristics
-        get_data_animal.location = animal.location
-        get_data_animal.status = animal.status
-        db.commit()
-        return {"message":"Datos actualizados!"}
+@animal_root.put("/pets/editing/{id}",status_code = status. HTTP_204_NO_CONTENT)
+def put_pets_id(id: int, animal: create_animal_base, db: Session = Depends(get_db)):
+    
+    try:
+        get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
+        if get_data_animal is None:
+            return {"message":"ID no se encuentra registrada"}
+        else:
+            get_data_animal.name = animal.name
+            get_data_animal.animal_type = animal.animal_type
+            get_data_animal.race = animal.race
+            get_data_animal.year = animal.year
+            get_data_animal.history = animal.history
+            get_data_animal.gender = animal.gender
+            get_data_animal.size = animal.size
+            get_data_animal.characteristics = animal.characteristics
+            get_data_animal.location = animal.location
+            get_data_animal.status = animal.status
+            db.commit()
+            return {"message":"Datos actualizados!"}
+        
+    except HTTPException(status_code=409, detail="Conflict") as e:
+        raise e       
 

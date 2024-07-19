@@ -8,7 +8,7 @@ class create_user_model(base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     create_at =  Column(String(250), nullable=False)
     name = Column(String(255), nullable=False)
-    surname = Column(String(255), nullable=False)
+    username = Column(String(255), nullable=False)
     year = Column(Integer, nullable=False)
     phone = Column(String(255), nullable=False)
     country = Column(String(255), nullable=False)
