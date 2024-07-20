@@ -9,6 +9,8 @@ import RegisterForm from './components/RegisterForm.jsx'
 import LoginForm from './components/LoginForm.jsx'
 import PetForm from './components/PetForm.jsx'
 import PetRequestForm from './components/PetRequestForm.jsx'
+import PetEditForm from './components/PetEditForm.jsx'
+import SearchRequest from './components/SearchRequest.jsx'
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: '/petRequestForm',
         element: <PetRequestForm />
+      },
+      {
+        path: '/pets/edit/:id',
+        element: <PetEditForm />
+      },
+      {
+        path: '/search/adoptionForm',
+        element: <SearchRequest />
       }
     ]
   }

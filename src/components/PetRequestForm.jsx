@@ -1,15 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { validateAdoptionForm } from '../utils'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-const PET_GENDER = ['masculino', 'femenino']
-const APPLICATION_TYPES = ['Adopción', 'Acogida']
-const EMPLOYMENT_SITUATIONS = ['Empleado', 'Desempleado', 'Estudiante', 'Otro']
-const HOUSE_TYPES = ['Apartamento', 'Casa', 'Otro']
-const INCOME_RANGE = ['Bajo', 'Medio', 'Alto']
-const YARD_OPTIONS = ['Sí', 'No']
-const another_pet_OPTIONS = ['Sí', 'No']
+const GENDER = ['m', 'f']
+const APPLICATION_TYPES = ['adopcion', 'transitorio']
+const EMPLOYMENT_SITUATIONS = ['empleado', 'desempleado', 'pensionado']
+const HOUSE_TYPES = ['casa', 'depto']
+const INCOME_RANGE = [
+  '500.000-700.000',
+  '700.001-900.000',
+  '900.001-1.100.000',
+  '1.100.001- y más'
+]
+const YARD_OPTIONS = ['si', 'no']
+const another_pet_OPTIONS = ['si', 'no']
 
 const PetRequestForm = () => {
   const [values, setValues] = useState({
@@ -30,6 +36,7 @@ const PetRequestForm = () => {
   })
 
   const [error, setError] = useState({})
+  const [success, setSuccess] = useState(false)
 
   const navigate = useNavigate()
 
@@ -40,42 +47,35 @@ const PetRequestForm = () => {
     })
   }
 
-  const validateForm = () => {
-    let isValid = true
-    const newErrors = {}
-
-    const validateEmail = (email) => {
-      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-      return regex.test(email)
-    }
-
-    if (!validateEmail(values.email)) {
-      newErrors.email = 'Introduce un email válido'
-      isValid = false
-    }
-
-    setError(newErrors)
-    return isValid
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSuccess(false)
+    setError({})
+    const isValid = validateAdoptionForm(values, setError)
 
-    const create_at = new Date().toISOString()
-
-    const parseAge = parseFloat(values.age)
-
-    const body = JSON.stringify({
-      ...values,
-      id: 0,
-      age: parseAge,
-      create_at,
-      status_appli: 'pendiente'
-    })
-
-    if (validateForm()) {
-      console.log(values)
+    if (isValid) {
       try {
+        const create_at = new Date()
+          .toLocaleDateString('es', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          })
+          .split('/')
+          .reverse()
+          .join('-')
+
+        const parseAge = parseFloat(values.age)
+
+        //al crear un nuevo usuario no se define un id por automatico en el back asi que cambiar el valor del id para que funcione si hay una peticion con el mismo id
+        const body = {
+          ...values,
+          id: 3,
+          age: parseAge,
+          create_at,
+          status_appli: 'pendiente'
+        }
+
         const response = await fetch(`${API_URL}/pets/application`, {
           method: 'POST',
           headers: {
@@ -84,19 +84,27 @@ const PetRequestForm = () => {
           },
           body: JSON.stringify(body)
         })
-        const data = await response.json()
-        console.log(body)
-        console.log(data)
 
-        navigate('/home')
-      } catch (error) {
-        console.error(error)
-        setError({ ...error, apiError: error.message })
+        if (response.ok) {
+          await response.json()
+          setSuccess(true)
+          setTimeout(() => {
+            navigate('/')
+          }, 2000)
+        }
+      } catch (e) {
+        console.error(e)
+        setError((prev) => ({ ...prev, apiError: e.message }))
       }
     } else {
-      console.error('Ocurrió un error')
+      console.error('Error al rellenar el formulario')
+      setError((prev) => ({
+        ...prev,
+        apiError: 'Error al rellenar el formulario'
+      }))
     }
   }
+
   return (
     <form className='flex flex-col items-center gap-2' onSubmit={handleSubmit}>
       <h2>Solicitud de Adopción</h2>
@@ -144,7 +152,7 @@ const PetRequestForm = () => {
         className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
       >
         <option value=''>Seleccionar</option>
-        {PET_GENDER.map((item) => (
+        {GENDER.map((item) => (
           <option key={item} value={item}>
             {item.charAt(0).toUpperCase() + item.slice(1)}
           </option>
@@ -313,11 +321,19 @@ const PetRequestForm = () => {
         </p>
       )}
 
-      <button className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'>
+      <button
+        type='submit'
+        className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'
+      >
         Enviar Solicitud
       </button>
       {error.apiError && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
+      )}
+      {success && (
+        <p className='text-green-500'>
+          Solicitud enviada... será redirigido en breve al inicio
+        </p>
       )}
     </form>
   )
