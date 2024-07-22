@@ -1,13 +1,10 @@
-# from sqlalchemy import Column, Enum, Date
-# from sqlalchemy.sql.sqltypes import Integer, String
-# from Backend.config.data_base import base
 from sqlalchemy import Column, Enum, Date, Integer, String
 from Backend.config.data_base import base
 
 class create_application(base):
     __tablename__ = "solicitudadopcion"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, index= True, autoincrement=True)
     create_at = Column(Date, nullable=False)
     name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
@@ -17,11 +14,12 @@ class create_application(base):
     phone = Column(Integer, nullable=False)
     type_appli = Column(Enum('adopcion', 'transitorio'), nullable=False)
     employm_situ = Column(Enum('empleado', 'desempleado', 'pensionado'), nullable=False)
+    income_range = Column(Enum('500.000-700.000', '700.001-900.000', '900.001-1.100.000', '1.100.001- y más'), nullable=True)
     type_of_house = Column(Enum('casa', 'depto'), nullable=False)
     yard = Column(Enum('si', 'no'), nullable=False)
     mt2_yard = Column(Integer, nullable=True)
     another_pet = Column(Enum('si', 'no'), nullable=False)
     another_pet_desc = Column(String(100), nullable=True)
     status_appli = Column(Enum('pendiente', 'aprobada', 'rechazada'), nullable=True)
-    
+
 

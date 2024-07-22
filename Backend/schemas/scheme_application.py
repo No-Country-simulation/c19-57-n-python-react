@@ -3,7 +3,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 class CreateApplicationBase(BaseModel):
-    id: Optional[int]
     create_at: Optional[date]
     name: str
     last_name: str
@@ -13,6 +12,7 @@ class CreateApplicationBase(BaseModel):
     phone: int
     type_appli: str
     employm_situ: str
+    income_range:str
     type_of_house: str
     yard: str
     mt2_yard: Optional[int]
@@ -32,6 +32,7 @@ class UpdateApplicationBase(BaseModel):
     phone: Optional[int]
     type_appli: Optional[str]
     employm_situ: Optional[str]
+    income_range: Optional[str]
     type_of_house: Optional[str]
     yard: Optional[str]
     mt2_yard: Optional[int]
