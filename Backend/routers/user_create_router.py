@@ -129,6 +129,3 @@ async def login_for_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@user_root.get("/test/token")
-def test(current_user: Annotated[create_user, Depends(get_current_user)]):
-    return current_user

@@ -1,5 +1,5 @@
 from logging.config import fileConfig
-from Backend.models.aplication_model import create_aplication
+from Backend.models.application_model import create_aplication
 from Backend.models.animals_model import create_animals
 from Backend.models.user_model import  create_user_model as user
 from sqlalchemy import engine_from_config
