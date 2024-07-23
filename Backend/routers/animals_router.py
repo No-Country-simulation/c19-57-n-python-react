@@ -9,7 +9,9 @@ from typing import List
 from datetime import datetime, date
 from fastapi.responses import JSONResponse
 from fastapi import status
-
+from Backend.routers.user_create_router import get_current_user
+from Backend.schemas.scheme_user import create_user
+from typing import Annotated
 
 animals_model.base.metadata.create_all(bind=engine)
 animal_root = APIRouter()
@@ -28,6 +30,7 @@ now = datetime.now()
 #Obtiene datos desde formulario
 @animal_root.post("/pets/register", status_code=status.HTTP_201_CREATED) 
 async def register_pets(
+        current_user: Annotated[create_user, Depends(get_current_user)],
         create_at: str = now.strftime("%m-%d-%Y"),
         name: str = Form(...),
         animal_type: str = Form(...),
@@ -41,8 +44,8 @@ async def register_pets(
         status: int = Form(...),
         imagen_profile: UploadFile = File(...),
         imagen_details: List[UploadFile] = File(...),
-        db: Session = Depends(get_db)
-    
+        db: Session = Depends(get_db),
+   
     ):
     
     try:
@@ -88,7 +91,7 @@ async def register_pets(
 
 
 @animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK)
-def get_pets_id(id: int, db: Session = Depends(get_db)):
+def get_pets_id(id: int,current_user: Annotated[create_user, Depends(get_current_user)] ,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
@@ -100,7 +103,7 @@ def get_pets_id(id: int, db: Session = Depends(get_db)):
         raise e 
 
 @animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
-def get_pets_all(db: Session = Depends(get_db)):
+def get_pets_all(current_user: Annotated[create_user, Depends(get_current_user)],db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).all()
         return JSONResponse(content=get_data_animal)
@@ -109,7 +112,7 @@ def get_pets_all(db: Session = Depends(get_db)):
         raise e 
 
 @animal_root.put("/pets/editing/{id}",status_code = status. HTTP_204_NO_CONTENT)
-def put_pets_id(id: int, animal: create_animal_base, db: Session = Depends(get_db)):
+def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[create_user, Depends(get_current_user)],db: Session = Depends(get_db)):
     
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()

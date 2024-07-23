@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from fastapi import Form, UploadFile
 from typing import Optional
+
 #Creacion de modelos para methods (POST, GET, PUT, DELETE)
 
 
