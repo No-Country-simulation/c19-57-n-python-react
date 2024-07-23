@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+}
+
+header img {
+    height: 50px;
+}
+
+/* Estilos específicos para vistas móviles */
+@media (max-width: 768px) {
+    header {
+        padding: 10px;
+    }
+
+    header img {
+        height: 40px;
+    }
+}
