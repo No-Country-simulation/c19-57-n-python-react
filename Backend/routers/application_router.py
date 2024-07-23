@@ -40,6 +40,13 @@ def read_application(application_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Application not found") # Lanza una excepción si no se encuentra la solicitud
     return application # Retorna la solicitud encontrada
 
+@appli_root.get("/pets/application/email/{email}", response_model=CreateApplicationBase)
+def read_application_by_email(email: str, db: Session = Depends(get_db)):
+    application = db.query(ApplicationModel).filter(ApplicationModel.email == email).first()
+    if application is None:
+        raise HTTPException(status_code=404, detail="Application not found")
+    return application
+
 # Función para eliminar una solicitud de adopción existente
 @appli_root.delete("/pets/application/{application_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_application(application_id: int, db: Session = Depends(get_db)):

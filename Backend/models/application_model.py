@@ -10,7 +10,7 @@ class create_application(base):
     last_name = Column(String(100), nullable=False)
     age = Column(Integer, nullable=False)
     genre = Column(Enum('F', 'M'), nullable=False)
-    email = Column(String(100), nullable=False)
+    email = Column(String(100), nullable=False, index= True)
     phone = Column(Integer, nullable=False)
     type_appli = Column(Enum('adopcion', 'transitorio'), nullable=False)
     employm_situ = Column(Enum('empleado', 'desempleado', 'pensionado'), nullable=False)
