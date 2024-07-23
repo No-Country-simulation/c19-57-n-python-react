@@ -1,6 +1,9 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { validateAdoptionForm } from '../utils'
+import TitleComponent from './TitleComponent'
+import InputComponent from './InputComponent'
+import Button from './Button'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -37,6 +40,8 @@ const PetRequestForm = () => {
 
   const [error, setError] = useState({})
   const [success, setSuccess] = useState(false)
+  const { id } = useParams()
+  const [acceptTerms, setAcceptTerms] = useState(false)
 
   const navigate = useNavigate()
 
@@ -52,6 +57,7 @@ const PetRequestForm = () => {
     setSuccess(false)
     setError({})
     const isValid = validateAdoptionForm(values, setError)
+    console.log(values)
 
     if (isValid) {
       try {
@@ -67,10 +73,9 @@ const PetRequestForm = () => {
 
         const parseAge = parseFloat(values.age)
 
-        //al crear un nuevo usuario no se define un id por automatico en el back asi que cambiar el valor del id para que funcione si hay una peticion con el mismo id
         const body = {
           ...values,
-          id: 3,
+          id: id,
           age: parseAge,
           create_at,
           status_appli: 'pendiente'
@@ -106,227 +111,195 @@ const PetRequestForm = () => {
   }
 
   return (
-    <form className='flex flex-col items-center gap-2' onSubmit={handleSubmit}>
-      <h2>Solicitud de Adopción</h2>
+    <form className='flex flex-col items-center gap-5' onSubmit={handleSubmit}>
+      <TitleComponent title={'Solicitud de Adopción'} />
 
-      <label htmlFor='name'>Nombre</label>
-      <input
-        type='text'
-        placeholder='Nombre'
+      <InputComponent
+        label={'¿A quien quieres adoptar?'}
+        placeholder={'Nombre de mascota'}
+        name={'id'}
+        value={id}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.id}
+        disabled={true}
+      />
+
+      <InputComponent
+        label={'Nombre'}
+        placeholder={'Nombre'}
+        name={'name'}
         value={values.name}
-        name='name'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        handleChange={handleChange}
+        type={'text'}
+        error={error.name}
       />
-      {error.name && <p className='mt-2 text-red-600 text-sm'>{error.name}</p>}
 
-      <label htmlFor='last_name'>Apellido</label>
-      <input
-        type='text'
+      <InputComponent
+        label='Apellido'
         placeholder='Apellido'
-        value={values.last_name}
         name='last_name'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        type='text'
+        value={values.last_name}
+        handleChange={handleChange}
+        error={error.last_name}
       />
-      {error.last_name && (
-        <p className='mt-2 text-red-600 text-sm'>{error.last_name}</p>
-      )}
 
-      <label htmlFor='age'>Edad</label>
-      <input
-        type='number'
+      <InputComponent
+        label={'Ciudad'}
+        placeholder={'Ciudad'}
+        name={'ciudad'}
+        value={'Ciudad'}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.city}
+        disabled={true}
+      />
+
+      <InputComponent
+        label='Edad'
         placeholder='Edad'
-        value={values.age}
         name='age'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        type='number'
+        value={values.age}
+        handleChange={handleChange}
+        error={error.age}
       />
-      {error.age && <p className='mt-2 text-red-600 text-sm'>{error.age}</p>}
 
-      <label htmlFor='genre'>Género</label>
-      <select
+      <InputComponent
+        type={'select'}
+        label='Género'
         name='genre'
         value={values.genre}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {GENDER.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.genre && (
-        <p className='mt-2 text-red-600 text-sm'>{error.genre}</p>
-      )}
-
-      <label htmlFor='email'>Email</label>
-      <input
-        type='text'
-        placeholder='Email'
-        value={values.email}
-        name='email'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        handleChange={handleChange}
+        options={GENDER}
+        error={error.genre}
       />
-      {error.email && (
-        <p className='mt-2 text-red-600 text-sm'>{error.email}</p>
-      )}
 
-      <label htmlFor='phone'>Teléfono</label>
-      <input
-        type='text'
-        placeholder='Teléfono'
-        value={values.phone}
-        name='phone'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      />
-      {error.phone && (
-        <p className='mt-2 text-red-600 text-sm'>{error.phone}</p>
-      )}
-
-      <label htmlFor='type_appli'>Tipo de Solicitud</label>
-      <select
+      <InputComponent
+        type={'select'}
+        label='Tipo de Solicitud'
         name='type_appli'
         value={values.type_appli}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {APPLICATION_TYPES.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.type_appli && (
-        <p className='mt-2 text-red-600 text-sm'>{error.type_appli}</p>
-      )}
+        handleChange={handleChange}
+        options={APPLICATION_TYPES}
+        error={error.type_appli}
+      />
 
-      <label htmlFor='employm_situ'>Situación Laboral</label>
-      <select
+      <InputComponent
+        type={'select'}
+        label='Situación Laboral'
         name='employm_situ'
         value={values.employm_situ}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {EMPLOYMENT_SITUATIONS.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.employm_situ && (
-        <p className='mt-2 text-red-600 text-sm'>{error.employm_situ}</p>
-      )}
+        handleChange={handleChange}
+        options={EMPLOYMENT_SITUATIONS}
+        error={error.employm_situ}
+      />
 
-      <label htmlFor='type_of_house'>Tipo de Vivienda</label>
-      <select
+      <InputComponent
+        type={'select'}
+        label='¿Vives en casa o departamento? ¿Propio o alquiler?'
         name='type_of_house'
         value={values.type_of_house}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {HOUSE_TYPES.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.type_of_house && (
-        <p className='mt-2 text-red-600 text-sm'>{error.type_of_house}</p>
-      )}
-
-      <label htmlFor='income_range'>Rango de Ingresos</label>
-      <select
-        name='income_range'
-        value={values.income_range}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {INCOME_RANGE.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.income_range && (
-        <p className='mt-2 text-red-600 text-sm'>{error.income_range}</p>
-      )}
-
-      <label htmlFor='yard'>¿Tiene Patio?</label>
-      <select
-        name='yard'
-        value={values.yard}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {YARD_OPTIONS.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.yard && <p className='mt-2 text-red-600 text-sm'>{error.yard}</p>}
-
-      <label htmlFor='mt2_yard'>Metros Cuadrados del Patio</label>
-      <input
-        type='number'
-        placeholder='Metros Cuadrados del Patio'
-        value={values.mt2_yard}
-        name='mt2_yard'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        handleChange={handleChange}
+        options={HOUSE_TYPES}
+        error={error.type_of_house}
       />
-      {error.mt2_yard && (
-        <p className='mt-2 text-red-600 text-sm'>{error.mt2_yard}</p>
-      )}
 
-      <label htmlFor='another_pet'>¿Tiene Otra Mascota?</label>
-      <select
+      <InputComponent
+        type={'select'}
+        label='¿Tiene Otra Mascota?'
         name='another_pet'
         value={values.another_pet}
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-      >
-        <option value=''>Seleccionar</option>
-        {another_pet_OPTIONS.map((item) => (
-          <option key={item} value={item}>
-            {item.charAt(0).toUpperCase() + item.slice(1)}
-          </option>
-        ))}
-      </select>
-      {error.another_pet && (
-        <p className='mt-2 text-red-600 text-sm'>{error.another_pet}</p>
-      )}
-
-      <label htmlFor='another_pet_desc'>Descripción de su otra Mascota</label>
-      <textarea
-        placeholder='Descripción de la Otra Mascota'
-        value={values.another_pet_desc}
-        name='another_pet_desc'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        handleChange={handleChange}
+        options={another_pet_OPTIONS}
+        error={error.another_pet}
       />
-      {error.another_pet_desc && (
-        <p className='mt-2 text-red-600 text-sm'>
-          {error.anotheranother_pet_descPet_desc}
-        </p>
-      )}
 
-      <button
-        type='submit'
-        className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'
-      >
-        Enviar Solicitud
-      </button>
+      <InputComponent
+        type={'text'}
+        label='Descripción de su otra Mascota'
+        placeholder='Descripción de la Otra Mascota'
+        name='another_pet_desc'
+        value={values.another_pet_desc}
+        handleChange={handleChange}
+        error={error.another_pet_desc}
+      />
+
+      <InputComponent
+        type={'select'}
+        label='Rango de Ingresos'
+        name='income_range'
+        value={values.income_range}
+        handleChange={handleChange}
+        options={INCOME_RANGE}
+        error={error.income_range}
+      />
+
+      <InputComponent
+        type={'select'}
+        label='¿Tiene Patio?'
+        name='yard'
+        value={values.yard}
+        handleChange={handleChange}
+        options={YARD_OPTIONS}
+        error={error.yard}
+      />
+
+      <InputComponent
+        label='Metros Cuadrados del Patio'
+        placeholder='Metros Cuadrados del Patio'
+        name='mt2_yard'
+        type='number'
+        value={values.mt2_yard}
+        handleChange={handleChange}
+        error={error.mt2_yard}
+      />
+
+      <InputComponent
+        label='Teléfono'
+        placeholder='Teléfono'
+        name='phone'
+        type='number'
+        value={values.phone}
+        handleChange={handleChange}
+        error={error.phone}
+      />
+
+      <InputComponent
+        label='Email'
+        placeholder='Email'
+        name='email'
+        type='text'
+        value={values.email}
+        handleChange={handleChange}
+        error={error.email}
+      />
+
+      <div className='text-start flex gap-2 my-5 w-full px-[18px]'>
+        <label className='flex items-center gap-6 text-base'>
+          <input
+            type='checkbox'
+            name={'accept'}
+            value={acceptTerms}
+            checked={acceptTerms}
+            onChange={() => setAcceptTerms(!acceptTerms)}
+            className='text-indigo-600 focus:ring-indigo-600'
+          />
+          Acepto el aviso de privacidad y términos y condiciones de Patitas
+        </label>
+        {error.accept && (
+          <p className='mt-2 text-red-600 text-sm'>{error.accept}</p>
+        )}
+      </div>
+
+      <Button
+        textSize='large'
+        color='primary'
+        size='small'
+        text='Enviar'
+        type={'submit'}
+      />
       {error.apiError && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
       )}

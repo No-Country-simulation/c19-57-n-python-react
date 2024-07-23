@@ -11,9 +11,10 @@ const SearchRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
+    const fetchUrl = `${API_URL}/pets/application/email/${search}`.toString()
 
     try {
-      const response = await fetch(`${API_URL}/pets/application/${search}`, {
+      const response = await fetch(fetchUrl, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

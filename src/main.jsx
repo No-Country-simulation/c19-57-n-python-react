@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         element: <PetForm />
       },
       {
-        path: '/petRequestForm',
+        path: '/petRequestForm/:id',
         element: <PetRequestForm />
       },
       {

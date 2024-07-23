@@ -203,12 +203,6 @@ export const validateAdoptionForm = (values, setError) => {
     isValid = false
   }
 
-  if (values.another_pet_desc.trim() === '') {
-    newErrors.another_pet_desc = 'Introduce una descripción de su otra mascota'
-    isValid = false
-  }
-  console.log(newErrors)
-
   setError(newErrors)
   return isValid
 }
