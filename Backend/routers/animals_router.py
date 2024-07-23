@@ -31,6 +31,7 @@ now = datetime.now()
 @animal_root.post("/pets/register", status_code=status.HTTP_201_CREATED) 
 async def register_pets(
         current_user: Annotated[create_user, Depends(get_current_user)],
+        response: Response,
         create_at: str = now.strftime("%m-%d-%Y"),
         name: str = Form(...),
         animal_type: str = Form(...),
@@ -81,6 +82,7 @@ async def register_pets(
 
             db.add(insert_animal)
             db.commit()
+            response.headers["Authorization"]= f"{current_user}"
             return Response(content=insert_animal.json(), media_type="application/json")
             # return {"message":"datos cargados"}
         else:
@@ -91,28 +93,30 @@ async def register_pets(
 
 
 @animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK)
-def get_pets_id(id: int,current_user: Annotated[create_user, Depends(get_current_user)] ,db: Session = Depends(get_db)):
+def get_pets_id(id: int,current_user: Annotated[create_user, Depends(get_current_user)],response: Response ,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
             return {"message":"ID no se encuentra registrada"}
         else:
+            response.headers["Authorization"] = f"{current_user}"
             return JSONResponse(content=get_data_animal)
     
     except HTTPException(status_code=404, detail="Not found") as e:
         raise e 
 
 @animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
-def get_pets_all(current_user: Annotated[create_user, Depends(get_current_user)],db: Session = Depends(get_db)):
+def get_pets_all(current_user: Annotated[create_user, Depends(get_current_user)],response:Response,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).all()
+        response.headers["Authorization"] = f"{current_user}"
         return JSONResponse(content=get_data_animal)
     
     except HTTPException(status_code=404, detail="Not found") as e:
         raise e 
 
 @animal_root.put("/pets/editing/{id}",status_code = status. HTTP_204_NO_CONTENT)
-def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[create_user, Depends(get_current_user)],db: Session = Depends(get_db)):
+def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[create_user, Depends(get_current_user)],response:Response,db: Session = Depends(get_db)):
     
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
@@ -130,6 +134,7 @@ def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[crea
             get_data_animal.location = animal.location
             get_data_animal.status = animal.status
             db.commit()
+            response.headers["Authorization"] = f"{current_user}"
             return {"message":"Datos actualizados!"}
         
     except HTTPException(status_code=409, detail="Conflict") as e:
