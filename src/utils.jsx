@@ -133,3 +133,76 @@ export const validatePetRegisterForm = (
   setError(newErrors)
   return isValid
 }
+
+export const validateAdoptionForm = (values, setError) => {
+  let isValid = true
+  const newErrors = {}
+
+  if (values.name.trim() === '') {
+    newErrors.name = 'Introduce un nombre'
+    isValid = false
+  }
+
+  if (values.last_name.trim() === '') {
+    newErrors.last_name = 'Introduce un apellido'
+    isValid = false
+  }
+
+  if (values.age.trim() === '' || isNaN(values.age)) {
+    newErrors.age = 'Introduce una edad válida'
+    isValid = false
+  }
+
+  if (values.genre === '') {
+    newErrors.genre = 'Seleccione género'
+    isValid = false
+  }
+
+  if (values.email.trim() === '') {
+    newErrors.email = 'Introduce un email'
+    isValid = false
+  }
+
+  if (values.phone.trim() === '') {
+    newErrors.phone = 'Introduce un teléfono'
+    isValid = false
+  }
+
+  if (values.type_appli === '') {
+    newErrors.type_appli = 'Seleccione tipo de solicitud'
+    isValid = false
+  }
+
+  if (values.employm_situ === '') {
+    newErrors.employm_situ = 'Seleccione situación laboral'
+    isValid = false
+  }
+
+  if (values.type_of_house === '') {
+    newErrors.type_of_house = 'Seleccione tipo de vivienda'
+    isValid = false
+  }
+
+  if (values.income_range === '') {
+    newErrors.income_range = 'Seleccione rango de ingresos'
+    isValid = false
+  }
+
+  if (values.yard === '') {
+    newErrors.yard = 'Seleccione si tiene patio'
+    isValid = false
+  }
+
+  if (values.mt2_yard.trim() === '' || isNaN(values.mt2_yard)) {
+    newErrors.mt2_yard = 'Introduce los metros cuadrados del patio'
+    isValid = false
+  }
+
+  if (values.another_pet === '') {
+    newErrors.another_pet = 'Seleccione si tiene otra mascota'
+    isValid = false
+  }
+
+  setError(newErrors)
+  return isValid
+}
