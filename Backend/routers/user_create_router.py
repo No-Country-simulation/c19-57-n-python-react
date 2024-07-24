@@ -1,4 +1,4 @@
-from typing import Annotated
+# from typing import Annotated
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPAuthorizationCredentials, OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -17,7 +17,9 @@ from jwt.exceptions import InvalidTokenError
 
 
 user_model.base.metadata.create_all(bind=engine)
-user_root = APIRouter()
+
+user_root = APIRouter(tags=['Authentication'])
+
 
 def get_db(): 
     db = localsesion()
@@ -91,7 +93,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-async def get_current_user(token:HTTPAuthorizationCredentials  = Depends(oauth2_scheme)):
+async def get_current_user(token:str = Depends(oauth2_scheme),db: Session = Depends(get_db)):
     
     credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -105,27 +107,30 @@ async def get_current_user(token:HTTPAuthorizationCredentials  = Depends(oauth2_
         token_data = TokenData(username=username)
     except (InvalidTokenError, ValidationError):
         raise credentials_exception
-    user = get_user(username=token_data.username,Session = Depends(get_db))
+    user = db.query(create_user_model).filter(create_user_model.username == token_data.username).first()
+    # user = db.query(models.User).filter(models.User.id == token.id).first()
+    # user = get_user(username=token_data.username,Session = Depends(get_db))
     if user is None:
         raise credentials_exception
     return user
 
 
-@user_root.post("/login")
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],db: Session = Depends(get_db)
+@user_root.post("/login", response_model=Token)
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),db: Session = Depends(get_db)
 ) -> Token:
     user = autenticate_user(form_data.username, form_data.password,db)
     
-    # print(form_data.username,form_data.password) --> test 
     
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
+    
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username},
         expires_delta=access_token_expires,
     )
-    return Token(access_token=access_token, token_type="bearer")
+    return {"access_token": access_token, "token_type": "bearer"}
+
 
 
