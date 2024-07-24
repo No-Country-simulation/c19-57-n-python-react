@@ -93,7 +93,7 @@ async def register_pets(
 
 
 @animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK)
-def get_pets_id(id: int,current_user: Annotated[create_user, Depends(get_current_user)],response: Response ,db: Session = Depends(get_db)):
+def get_pets_id(id: int,response: Response,current_user:str = Depends(get_current_user),db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
