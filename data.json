@@ -40,5 +40,19 @@
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
     "caracter": "Tranquilo, afectuoso y valiente"
+  },
+  {
+    "nombre": "Golden Retriever",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Mediano a grande",
+    "caracter": "Amigable, inteligente y confiable"
+  },
+  {
+    "nombre": "Poodle",
+    "sexo": "Varía",
+    "edad": "Depende del individuo",
+    "tamaño": "Varía",
+    "caracter": "Inteligente, activo y leal"
   }
 ]
