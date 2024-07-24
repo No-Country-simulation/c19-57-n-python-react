@@ -12,6 +12,7 @@ from fastapi import status
 from Backend.routers.user_create_router import get_current_user
 from Backend.schemas.scheme_user import create_user
 from typing import Annotated
+from traceback import print_exception
 
 animals_model.base.metadata.create_all(bind=engine)
 animal_root = APIRouter()
@@ -28,7 +29,7 @@ now = datetime.now()
 
 
 #Obtiene datos desde formulario
-@animal_root.post("/pets/register", status_code=status.HTTP_201_CREATED) 
+@animal_root.post("/pets/register", status_code=status.HTTP_201_CREATED,response_model=create_animal_base) 
 async def register_pets(
         current_user: Annotated[create_user, Depends(get_current_user)],
         response: Response,
@@ -83,16 +84,16 @@ async def register_pets(
             db.add(insert_animal)
             db.commit()
             response.headers["Authorization"]= f"{current_user}"
-            return Response(content=insert_animal.json(), media_type="application/json")
-            # return {"message":"datos cargados"}
+            return insert_animal
         else:
             raise HTTPException(status_code=401, detail="Extension no permitida")
         
-    except HTTPException(status_code=400, detail="Bad Request") as e:
-        raise e       
+    except Exception as e:
+        print_exception(e)
+        return Response("Internal server error", status_code=500)       
 
 
-@animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK)
+@animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK,response_model=create_animal_base)
 def get_pets_id(id: int,response: Response,current_user:str = Depends(get_current_user),db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
@@ -100,20 +101,22 @@ def get_pets_id(id: int,response: Response,current_user:str = Depends(get_curren
             return {"message":"ID no se encuentra registrada"}
         else:
             response.headers["Authorization"] = f"{current_user}"
-            return JSONResponse(content=get_data_animal)
+            return get_data_animal
     
-    except HTTPException(status_code=404, detail="Not found") as e:
-        raise e 
+    except Exception as e:
+        print_exception(e)
+        return Response("Internal server error", status_code=500)       
 
 @animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
 def get_pets_all(current_user: Annotated[create_user, Depends(get_current_user)],response:Response,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).all()
         response.headers["Authorization"] = f"{current_user}"
-        return JSONResponse(content=get_data_animal)
-    
-    except HTTPException(status_code=404, detail="Not found") as e:
-        raise e 
+        return get_data_animal
+
+    except Exception as e:
+        print_exception(e)
+        return Response("Internal server error", status_code=500) 
 
 @animal_root.put("/pets/editing/{id}",status_code = status. HTTP_204_NO_CONTENT)
 def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[create_user, Depends(get_current_user)],response:Response,db: Session = Depends(get_db)):
@@ -137,6 +140,7 @@ def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[crea
             response.headers["Authorization"] = f"{current_user}"
             return {"message":"Datos actualizados!"}
         
-    except HTTPException(status_code=409, detail="Conflict") as e:
-        raise e       
+    except Exception as e:
+        print_exception(e)
+        return Response("Internal server error", status_code=500)   
 
