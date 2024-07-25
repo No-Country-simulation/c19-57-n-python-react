@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import TitleComponent from './TitleComponent'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -34,10 +35,10 @@ const SearchRequest = () => {
     }
   }
   return (
-    <div className='flex flex-col items-center justify-center gap-4 bg-pink-default h-80 px-4'>
-      <h2 className='text-2xl'>Consultar Estado de Solicitud</h2>
+    <div className='flex flex-col items-center justify-center'>
+      <TitleComponent title={'Consultar Estado de Solicitud'} />
       <form
-        className='flex items-center rounded-[14px] border-[1px] border-[#435B71] px-[20px] py-3 w-full -top-2 bg-[#ffff] gap-3'
+        className='flex items-center rounded-[14px] border-[1px] border-[#435B71] px-[20px] py-3 sm:w-96 -mt-12 bg-[#ffff] gap-3 mx-3'
         onSubmit={handleSubmit}
       >
         <button>
@@ -63,12 +64,15 @@ const SearchRequest = () => {
         />
       </form>
       {data && !error && (
-        <div className='flex flex-col gap-1 text-xl'>
+        <div className='flex flex-col gap-1 text-xl mt-5'>
           <h3>
             NOMBRE :{data.name.toUpperCase()} {data.last_name.toUpperCase()}
           </h3>
           <p>ESTADO: {data.status_appli}</p>
         </div>
+      )}
+      {!data && !error && (
+        <h3 className='mt-5'>Ingrese su mail para consultar</h3>
       )}
       {error && <p className='text-red-500'>{error}</p>}
     </div>

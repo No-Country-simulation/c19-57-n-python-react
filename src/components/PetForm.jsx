@@ -253,6 +253,9 @@ const PetForm = () => {
       hover:file:bg-violet-100
     '
         />
+        {error.imagenProfile && (
+          <p className='mt-2 text-red-600 text-sm'>{error.imagenProfile}</p>
+        )}
       </div>
       <div>
         <label>Más fotos</label>
@@ -269,6 +272,9 @@ const PetForm = () => {
       hover:file:bg-violet-100
     '
         />
+        {error.imagenDetails && (
+          <p className='mt-2 text-red-600 text-sm'>{error.imagenDetails}</p>
+        )}
       </div>
       <button
         className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'
