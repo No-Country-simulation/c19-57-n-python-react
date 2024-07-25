@@ -1,10 +1,13 @@
 from fastapi import APIRouter, HTTPException, Depends,status
 from sqlalchemy.orm import Session
+from Backend.models import user_model
 from Backend.schemas.scheme_application import create_application_base
 from Backend.models.application_model import create_application as ApplicationModel
+from Backend.config.data_base import engine
 from sqlalchemy.exc import SQLAlchemyError
 from Backend.config.data_base import localsesion
 
+user_model.base.metadata.create_all(bind=engine)
 appli_root = APIRouter()
 
 
@@ -25,7 +28,7 @@ def create_application(
         application = ApplicationModel(**post.model_dump())
         db.add(application)
         db.commit()
-        db.refresh(application)
+        #db.refresh(application)
         return application
     except SQLAlchemyError as e:
         db.rollback()
