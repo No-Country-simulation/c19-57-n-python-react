@@ -13,7 +13,7 @@ const InputComponent = ({
 }) => {
   if (type === 'text' || type === 'number') {
     return (
-      <div className='text-start flex flex-col gap-2 w-full px-[18px]'>
+      <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
         <label htmlFor={name} className='font-medium'>
           {label.charAt(0).toUpperCase() + label.slice(1)}
         </label>
@@ -31,7 +31,7 @@ const InputComponent = ({
     )
   } else if (type === 'select') {
     return (
-      <div className='text-start flex flex-col gap-2 w-full px-[18px]'>
+      <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
         <h3 className='font-medium'>
           {label.charAt(0).toUpperCase() + label.slice(1)}
         </h3>
