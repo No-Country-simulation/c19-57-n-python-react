@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { validatePetRegisterForm } from '../utils'
+import useToken from '../hooks/useToken'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -23,6 +24,7 @@ const PetForm = () => {
   const [imagenDetails, setImagenDetails] = useState([])
   const [error, setError] = useState({})
   const navigate = useNavigate()
+  const { token } = useToken()
 
   const handleChange = (e) => {
     setValues({
@@ -66,7 +68,10 @@ const PetForm = () => {
       try {
         const response = await fetch(`${API_URL}/pets/register`, {
           method: 'POST',
-          body: formData
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         })
 
         if (response.ok) {

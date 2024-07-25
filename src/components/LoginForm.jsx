@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const LoginForm = () => {
   const [values, setValues] = useState({
-    email: '',
+    username: '',
     password: ''
   })
 
@@ -15,6 +15,8 @@ const LoginForm = () => {
   const { setToken, deleteToken } = useToken()
 
   const navigate = useNavigate()
+
+  const [success, setSuccess] = useState(null)
 
   const handleChange = (e) => {
     setValues({
@@ -27,18 +29,8 @@ const LoginForm = () => {
     let isValid = true
     const newErrors = {}
 
-    const validateEmail = (email) => {
-      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-      return regex.test(email)
-    }
-
-    if (!validateEmail(values.email)) {
-      newErrors.email = 'Introduce un email valido'
-      isValid = false
-    }
-
-    if (values.email.trim() === '') {
-      newErrors.email = 'Introduce un email'
+    if (values.username.trim() === '') {
+      newErrors.username = 'Introduce un nombre de usuario'
       isValid = false
     }
 
@@ -54,18 +46,24 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    const body = new URLSearchParams({
+      username: values.username,
+      password: values.password
+    })
+
     if (validateForm()) {
       try {
         const response = await fetch(`${API_URL}/login`, {
           method: 'POST',
           headers: {
             accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify(values)
+          body
         })
         const data = await response.json()
-        setToken(data)
+        setToken(data.access_token)
+        setSuccess('Exito! Será redirigido en breve.')
 
         //redirige al home al estar logeado
         navigate('/')
@@ -83,17 +81,17 @@ const LoginForm = () => {
     <form className='flex flex-col items-center gap-2' onSubmit={handleSubmit}>
       <h2>Iniciar Sesion</h2>
 
-      <label htmlFor='email'>Email</label>
+      <label htmlFor='username'>Nombre de Usuario</label>
       <input
         type='text'
-        placeholder='Email'
-        value={values.email}
-        name='email'
+        placeholder='Nombre de Usuario'
+        value={values.username}
+        name='username'
         onChange={handleChange}
         className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
       />
-      {error.email && (
-        <p className='mt-2 text-red-600 text-sm'>{error.email}</p>
+      {error.username && (
+        <p className='mt-2 text-red-600 text-sm'>{error.username}</p>
       )}
 
       <label htmlFor='password'>Contraseña</label>
@@ -115,6 +113,7 @@ const LoginForm = () => {
       {error.apiError && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
       )}
+      {success && <p className='mt-2 text-green-600 text-sm'>{success}</p>}
     </form>
   )
 }

@@ -8,7 +8,7 @@ const buttonStyles = {
   sizes: {
     small: 'py-1 px-2',
     medium: 'py-2 px-4',
-    large: 'py-3 px-6'
+    large: 'py-1 px-4'
   },
   textSizes: {
     small: 'text-sm',
@@ -25,7 +25,7 @@ const Button = ({ textSize, color, size, text, type }) => {
   return (
     <button
       type={type}
-      className={`h-11 rounded-md px-[147px] text-blue-darker font-semibold ${colorClass} ${sizeClass} ${textSizeClass}`}
+      className={`h-11 rounded-md px-[100px] sm:px-[147px] 2xl:px-[260.5px] text-blue-darker font-semibold ${colorClass} ${sizeClass} ${textSizeClass}`}
     >
       {text}
     </button>
