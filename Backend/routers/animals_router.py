@@ -6,12 +6,8 @@ from Backend.models import animals_model
 from Backend.models.animals_model import create_animals
 from Backend.config.data_base import engine
 from typing import List
-from datetime import datetime, date
-from fastapi.responses import JSONResponse
-from fastapi import status
+from datetime import datetime
 from Backend.routers.user_create_router import get_current_user
-from Backend.schemas.scheme_user import create_user
-from typing import Annotated
 from traceback import print_exception
 
 animals_model.base.metadata.create_all(bind=engine)
@@ -27,12 +23,10 @@ def get_db():
 
 now = datetime.now()  
 
-
-#Obtiene datos desde formulario
 @animal_root.post("/pets/register", status_code=status.HTTP_201_CREATED,response_model=create_animal_base) 
 async def register_pets(
-        current_user: Annotated[create_user, Depends(get_current_user)],
         response: Response,
+        current_user:str = Depends(get_current_user),
         create_at: str = now.strftime("%m-%d-%Y"),
         name: str = Form(...),
         animal_type: str = Form(...),
@@ -47,7 +41,6 @@ async def register_pets(
         imagen_profile: UploadFile = File(...),
         imagen_details: List[UploadFile] = File(...),
         db: Session = Depends(get_db),
-   
     ):
     
     try:
@@ -86,7 +79,7 @@ async def register_pets(
             response.headers["Authorization"]= f"{current_user}"
             return insert_animal
         else:
-            raise HTTPException(status_code=401, detail="Extension no permitida")
+            raise HTTPException(status_code=401, detail="Extension not allowed")
         
     except Exception as e:
         print_exception(e)
@@ -98,7 +91,7 @@ def get_pets_id(id: int,response: Response,current_user:str = Depends(get_curren
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
-            return {"message":"ID no se encuentra registrada"}
+            return {"message":"ID is not registered"}
         else:
             response.headers["Authorization"] = f"{current_user}"
             return get_data_animal
@@ -107,8 +100,9 @@ def get_pets_id(id: int,response: Response,current_user:str = Depends(get_curren
         print_exception(e)
         return Response("Internal server error", status_code=500)       
 
+
 @animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
-def get_pets_all(current_user: Annotated[create_user, Depends(get_current_user)],response:Response,db: Session = Depends(get_db)):
+def get_pets_all(response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).all()
         response.headers["Authorization"] = f"{current_user}"
@@ -118,13 +112,14 @@ def get_pets_all(current_user: Annotated[create_user, Depends(get_current_user)]
         print_exception(e)
         return Response("Internal server error", status_code=500) 
 
-@animal_root.put("/pets/editing/{id}",status_code = status. HTTP_204_NO_CONTENT)
-def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[create_user, Depends(get_current_user)],response:Response,db: Session = Depends(get_db)):
+
+@animal_root.put("/pets/editing/{id}",responses={204: {"model": None}},response_model=create_animal_base)
+def put_pets_id(id: int, animal: create_animal_base,response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
     
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
-            return {"message":"ID no se encuentra registrada"}
+            return Response("ID is not registered",status_code=404)
         else:
             get_data_animal.name = animal.name
             get_data_animal.animal_type = animal.animal_type
@@ -138,7 +133,7 @@ def put_pets_id(id: int, animal: create_animal_base,current_user: Annotated[crea
             get_data_animal.status = animal.status
             db.commit()
             response.headers["Authorization"] = f"{current_user}"
-            return {"message":"Datos actualizados!"}
+            return Response(status_code=status.HTTP_204_NO_CONTENT)
         
     except Exception as e:
         print_exception(e)
