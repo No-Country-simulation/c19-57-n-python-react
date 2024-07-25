@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import useToken from '../hooks/useToken'
-import { useNavigate } from 'react-router-dom'
+/* import { useNavigate } from 'react-router-dom' */
 import PetCard from './PetCard'
+import pets from '../../data.json'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -9,7 +10,7 @@ const ListPets = () => {
   const [data, setData] = useState()
   const { token } = useToken()
   const [error, setError] = useState({})
-  const navigate = useNavigate()
+  /* const navigate = useNavigate() */
 
   useEffect(() => {
     async function fetchData() {
@@ -24,10 +25,12 @@ const ListPets = () => {
         })
 
         if (response.statusText === 'Unauthorized') {
-          navigate('/login')
+          console.log('Unauthorized')
+          /* navigate('/login') */
         }
 
         if (!response.ok) {
+          setData(pets)
           throw new Error('Error')
         }
 
@@ -47,13 +50,13 @@ const ListPets = () => {
         data.map((pet, index) => (
           <PetCard
             key={index}
-            nombre={pet.name}
-            sexo={pet.gender}
-            edad={pet.year}
-            tamaño={pet.size}
-            caracter={pet.characteristics}
-            imagen={pet.imagen_profile}
-            id={pet.id}
+            nombre={pet.name || pet.nombre}
+            sexo={pet.gender || pet.sexo}
+            edad={pet.year || pet.edad}
+            tamaño={pet.size || pet.tamaño}
+            caracter={pet.characteristics || pet.caracter}
+            imagen={pet.imagen_profile || 'gato1.jpeg'}
+            id={pet.id || 0}
           />
         ))}
       {error.apiError && (
