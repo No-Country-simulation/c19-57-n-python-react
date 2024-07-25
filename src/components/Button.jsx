@@ -6,9 +6,10 @@ const buttonStyles = {
     disabled: 'bg-[#bfc7cf] hover:bg-[#fff5ee]'
   },
   sizes: {
-    small: 'py-1 px-2',
-    medium: 'py-2 px-4',
-    large: 'py-1 px-4'
+    small: 'py-1 px-[100px] sm:px-[147px] 2xl:px-[260.5px]',
+    medium: 'py-2 px-[100px] sm:px-[147px] 2xl:px-[260.5px]',
+    large: 'py-2 px-[100px] sm:px-[147px] 2xl:px-[260.5px]',
+    login: 'py-2 w-full'
   },
   textSizes: {
     small: 'text-sm',
@@ -25,7 +26,7 @@ const Button = ({ textSize, color, size, text, type }) => {
   return (
     <button
       type={type}
-      className={`h-11 rounded-md px-[100px] sm:px-[147px] 2xl:px-[260.5px] text-blue-darker font-semibold ${colorClass} ${sizeClass} ${textSizeClass}`}
+      className={`h-11 rounded-md text-blue-darker font-semibold ${colorClass} ${sizeClass} ${textSizeClass}`}
     >
       {text}
     </button>
