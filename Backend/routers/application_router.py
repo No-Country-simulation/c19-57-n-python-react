@@ -24,11 +24,10 @@ def create_application(
     db: Session = Depends(get_db)
 ):
     try:
-        print(f"Received data: {post.model_dump()}")  # Imprime los datos recibidos
+        print(f"Received data: {post.model_dump()}") 
         application = ApplicationModel(**post.model_dump())
         db.add(application)
         db.commit()
-        db.refresh(application)
         response.headers["Authorization"]= f"{current_user}"
         return application
     

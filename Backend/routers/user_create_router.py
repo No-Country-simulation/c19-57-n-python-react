@@ -36,7 +36,7 @@ def get_db():
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUT')
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -129,7 +129,7 @@ async def login(
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES )
     access_token = create_access_token(
         data={"sub": user.username},
         expires_delta=access_token_expires,

@@ -113,13 +113,13 @@ def get_pets_all(response:Response,current_user: str = Depends(get_current_user)
         return Response("Internal server error", status_code=500) 
 
 
-@animal_root.put("/pets/editing/{id}",status_code = status. HTTP_204_NO_CONTENT)
+@animal_root.put("/pets/editing/{id}",responses={204: {"model": None}},response_model=create_animal_base)
 def put_pets_id(id: int, animal: create_animal_base,response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
     
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
-            return {"message":"ID is not registered"}
+            return Response("ID is not registered",status_code=404)
         else:
             get_data_animal.name = animal.name
             get_data_animal.animal_type = animal.animal_type
@@ -133,7 +133,7 @@ def put_pets_id(id: int, animal: create_animal_base,response:Response,current_us
             get_data_animal.status = animal.status
             db.commit()
             response.headers["Authorization"] = f"{current_user}"
-            return {"message":"Updated data"}
+            return Response(status_code=status.HTTP_204_NO_CONTENT)
         
     except Exception as e:
         print_exception(e)
