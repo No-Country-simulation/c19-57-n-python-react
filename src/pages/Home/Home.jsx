@@ -37,9 +37,7 @@ const Home = () => {
           <h2 className='text-lg text-center text-[#002140] py-7 font-medium'>
             Adopción urgente
           </h2>
-          <div className='justify-center flex flex-col md:flex-row flex-wrap gap-4'>
-            <ListPets />
-          </div>
+          <ListPets />
         </div>
       </div>
     </div>

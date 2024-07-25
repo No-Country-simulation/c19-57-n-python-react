@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import useToken from '../hooks/useToken'
 /* import { useNavigate } from 'react-router-dom' */
@@ -45,7 +46,7 @@ const ListPets = () => {
   }, [])
 
   return (
-    <div>
+    <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-fit mx-auto'>
       {data &&
         data.map((pet, index) => (
           <PetCard
