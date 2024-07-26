@@ -31,7 +31,9 @@ const StickyNavbar = () => {
 
   return (
     <header className='flex items-center justify-between py-4 px-8'>
-      <img className='md:w-[105px] md:h-[49px]' src={logo} alt='Logo' />
+      <Link to={'/'}>
+        <img className='md:w-[105px] md:h-[49px]' src={logo} alt='Logo' />
+      </Link>
       <button
         className='md:hidden text-xl text-gray-800 bg-transparent border-0 cursor-pointer'
         onClick={toggleNav}
@@ -55,6 +57,7 @@ const StickyNavbar = () => {
             <li key={item.name}>
               <Link
                 to={item.url}
+                onClick={toggleNav}
                 className='text-xl md:font-medium font-semibold text-black no-underline'
               >
                 {item.name}
