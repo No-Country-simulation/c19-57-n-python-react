@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { validateRegisterForm } from '../utils'
+import useToken from '../hooks/useToken'
 
 const userGender = [
   'Seleccionar',
@@ -28,6 +29,7 @@ const RegisterForm = () => {
   })
 
   const [error, setError] = useState({})
+  const { token } = useToken()
 
   const handleChange = (e) => {
     setValues({
@@ -66,7 +68,8 @@ const RegisterForm = () => {
           method: 'POST',
           headers: {
             accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           },
           body
         })

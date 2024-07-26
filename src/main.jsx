@@ -13,6 +13,7 @@ import PetEditForm from './components/PetEditForm.jsx'
 import SearchRequest from './components/SearchRequest.jsx'
 import NotFound from './pages/NotFound.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import ListPets from './components/ListPets.jsx'
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,14 @@ const router = createBrowserRouter([
       {
         path: '/search/adoptionForm',
         element: <SearchRequest />
+      },
+      {
+        path: '/dogs',
+        element: <Home />
+      },
+      {
+        path: '/cats',
+        element: <Home />
       }
     ]
   },

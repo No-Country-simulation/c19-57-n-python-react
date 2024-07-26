@@ -11,7 +11,7 @@ const InputComponent = ({
   options,
   disabled
 }) => {
-  if (type === 'text' || type === 'number') {
+  if (type === 'text' || type === 'number' || type === 'password') {
     return (
       <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
         <label htmlFor={name} className='font-medium'>
