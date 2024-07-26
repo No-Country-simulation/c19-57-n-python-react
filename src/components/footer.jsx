@@ -71,14 +71,14 @@ export function FooterWithSitemap() {
             </div>
           ))}
           {TEST_ROUTES.map((item) => (
-            <Link key={item.id} to={item.url}>
+            <Link key={item.name} to={item.url}>
               {item.name}
             </Link>
           ))}
         </div>
         <div className='flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between'>
           <Typography
-            variant='medium'
+            variant='small'
             className='mb-4 text-center font-normal text-blue-gray-900 md:mb-0'
             color='black'
           >
