@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import TitleComponent from './TitleComponent'
+import useToken from '../hooks/useToken'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -7,6 +8,7 @@ const SearchRequest = () => {
   const [search, setSearch] = useState('')
   const [data, setData] = useState()
   const [error, setError] = useState()
+  const { token } = useToken()
 
   //por ahora solo funciona introduciendo ids
   const handleSubmit = async (e) => {
@@ -19,7 +21,8 @@ const SearchRequest = () => {
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         }
       })
 

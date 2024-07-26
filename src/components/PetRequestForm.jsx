@@ -88,7 +88,8 @@ const PetRequestForm = () => {
           method: 'POST',
           headers: {
             accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(body)
         })

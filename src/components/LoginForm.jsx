@@ -100,7 +100,7 @@ const LoginForm = () => {
         name={'password'}
         value={values.password}
         handleChange={handleChange}
-        type={'text'}
+        type={'password'}
         error={error.password}
       />
 
