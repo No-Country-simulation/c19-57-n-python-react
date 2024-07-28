@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import useToken from '../hooks/useToken'
 
 const PET_TYPE = ['perro', 'gato']
 const PET_GENDER = ['masculino', 'femenino']
@@ -29,6 +30,7 @@ const PetEditForm = () => {
   const [success, setSuccess] = useState(false)
 
   const [error, setError] = useState({})
+  const { token } = useToken()
 
   const handleChange = (e) => {
     setValues({
@@ -101,7 +103,8 @@ const PetEditForm = () => {
         method: 'PUT',
         headers: {
           accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body
       })
@@ -126,7 +129,8 @@ const PetEditForm = () => {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           }
         })
 

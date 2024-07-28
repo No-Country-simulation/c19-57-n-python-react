@@ -12,6 +12,9 @@ import PetRequestForm from './components/PetRequestForm.jsx'
 import PetEditForm from './components/PetEditForm.jsx'
 import SearchRequest from './components/SearchRequest.jsx'
 import NotFound from './pages/NotFound.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
+import DogsList from './components/DogsList.jsx'
+import CatsList from './components/CatsList.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/register',
-        element: <RegisterForm />
+        element: <ProtectedRoute element={<RegisterForm />} />
       },
       {
         path: '/login',
@@ -35,19 +38,27 @@ const router = createBrowserRouter([
       },
       {
         path: '/petform',
-        element: <PetForm />
+        element: <ProtectedRoute element={<PetForm />} />
       },
       {
         path: '/petRequestForm/:id',
-        element: <PetRequestForm />
+        element: <ProtectedRoute element={<PetRequestForm />} />
       },
       {
         path: '/pets/edit/:id',
-        element: <PetEditForm />
+        element: <ProtectedRoute element={<PetEditForm />} />
       },
       {
         path: '/search/adoptionForm',
         element: <SearchRequest />
+      },
+      {
+        path: '/dogs',
+        element: <DogsList />
+      },
+      {
+        path: '/cats',
+        element: <CatsList />
       }
     ]
   },

@@ -4,55 +4,63 @@
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Pequeño a mediano",
-    "caracter": "Curioso, amigable y enérgico"
+    "caracter": "Curioso, amigable y enérgico",
+    "animal_type": "Gato"
   },
   {
     "nombre": "Pastor Alemán",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
-    "caracter": "Inteligente, leal y protector"
+    "caracter": "Inteligente, leal y protector",
+    "animal_type": "Perro"
   },
   {
     "nombre": "Labrador Retriever",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
-    "caracter": "Amigable, juguetón y obediente"
+    "caracter": "Amigable, juguetón y obediente",
+    "animal_type": "Perro"
   },
   {
     "nombre": "Chihuahua",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Pequeño",
-    "caracter": "Valiente, alerta y cariñoso"
+    "caracter": "Valiente, alerta y cariñoso",
+    "animal_type": "Perro"
   },
   {
     "nombre": "Akita Inu",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Grande",
-    "caracter": "Fiel, independiente y valiente"
+    "caracter": "Fiel, independiente y valiente",
+    "animal_type": "Perro"
   },
   {
     "nombre": "Bulldog",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
-    "caracter": "Tranquilo, afectuoso y valiente"
+    "caracter": "Tranquilo, afectuoso y valiente",
+    "animal_type": "Perro"
   },
   {
     "nombre": "Golden Retriever",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
-    "caracter": "Amigable, inteligente y confiable"
+    "caracter": "Amigable, inteligente y confiable",
+    "animal_type": "Perro"
   },
   {
     "nombre": "Poodle",
     "sexo": "Varía",
     "edad": "Depende del individuo",
     "tamaño": "Varía",
-    "caracter": "Inteligente, activo y leal"
+    "caracter": "Inteligente, activo y leal",
+    "animal_type": "Gato"
   }
 ]

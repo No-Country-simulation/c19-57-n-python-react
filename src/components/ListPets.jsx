@@ -8,7 +8,10 @@ import pets from '../../data.json'
 const API_URL = import.meta.env.VITE_API_URL
 
 const ListPets = () => {
-  const [data, setData] = useState()
+  const [data, setData] = useState(() => {
+    const savedData = localStorage.getItem('pets')
+    return savedData ? JSON.parse(savedData) : null
+  })
   const { token } = useToken()
   const [error, setError] = useState({})
   /* const navigate = useNavigate() */
@@ -36,7 +39,14 @@ const ListPets = () => {
         }
 
         const data = await response.json()
-        setData(data)
+
+        const savedData = localStorage.getItem('pets')
+        const parsedSavedData = savedData ? JSON.parse(savedData) : null
+
+        if (JSON.stringify(data) !== JSON.stringify(parsedSavedData)) {
+          setData(data)
+          localStorage.setItem('pets', JSON.stringify(data))
+        }
       } catch (err) {
         setError({ ...error, apiError: err.message })
       }

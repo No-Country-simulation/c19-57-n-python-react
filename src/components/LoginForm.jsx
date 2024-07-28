@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import useToken from '../hooks/useToken'
 import { useNavigate } from 'react-router-dom'
+import TitleComponent from './TitleComponent'
+import InputComponent from './InputComponent'
+import Button from './Button'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -78,38 +81,42 @@ const LoginForm = () => {
   }
 
   return (
-    <form className='flex flex-col items-center gap-2' onSubmit={handleSubmit}>
-      <h2>Iniciar Sesion</h2>
+    <form className='flex flex-col items-center gap-5' onSubmit={handleSubmit}>
+      <TitleComponent title={'Iniciar Sesión'} />
 
-      <label htmlFor='username'>Nombre de Usuario</label>
-      <input
-        type='text'
-        placeholder='Nombre de Usuario'
+      <InputComponent
+        label={'Usuario'}
+        placeholder={'Nombre de Usuario'}
+        name={'username'}
         value={values.username}
-        name='username'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        handleChange={handleChange}
+        type={'text'}
+        error={error.username}
       />
-      {error.username && (
-        <p className='mt-2 text-red-600 text-sm'>{error.username}</p>
-      )}
 
-      <label htmlFor='password'>Contraseña</label>
-      <input
-        type='password'
-        placeholder='Contraseña'
+      <InputComponent
+        label={'Contraseña'}
+        placeholder={'Contraseña'}
+        name={'password'}
         value={values.password}
-        name='password'
-        onChange={handleChange}
-        className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+        handleChange={handleChange}
+        type={'password'}
+        error={error.password}
       />
-      {error.password && (
-        <p className='mt-2 text-red-600 text-sm'>{error.password}</p>
-      )}
 
-      <button className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'>
+      <div className='2xl:w-[714px] px-[18px] md:px-[50px] w-full'>
+        <Button
+          textSize='large'
+          color='primary'
+          size='login'
+          text='Entrar'
+          type={'submit'}
+        />
+      </div>
+
+      {/* <button className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'>
         Iniciar Sesion
-      </button>
+      </button> */}
       {error.apiError && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
       )}
