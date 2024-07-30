@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import DogsList from './components/DogsList.jsx'
 import CatsList from './components/CatsList.jsx'
+import PetDetails from './pages/PetDetails.jsx'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: '/cats',
         element: <CatsList />
+      },
+      {
+        path: '/petdetails',
+        element: <PetDetails />
       }
     ]
   },
