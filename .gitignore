@@ -21,6 +21,7 @@ venv
 docs.zip
 archive.zip
 Backend/config/
+vercel.json
 
 # vim temporary files
 *~

@@ -87,13 +87,12 @@ async def register_pets(
 
 
 @animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK,response_model=create_animal_base)
-def get_pets_id(id: int,response: Response,current_user:str = Depends(get_current_user),db: Session = Depends(get_db)):
+def get_pets_id(id: int,response: Response,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
             return {"message":"ID is not registered"}
         else:
-            response.headers["Authorization"] = f"{current_user}"
             return get_data_animal
     
     except Exception as e:
@@ -102,10 +101,9 @@ def get_pets_id(id: int,response: Response,current_user:str = Depends(get_curren
 
 
 @animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
-def get_pets_all(response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+def get_pets_all(response:Response,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).all()
-        response.headers["Authorization"] = f"{current_user}"
         return get_data_animal
 
     except Exception as e:
@@ -114,7 +112,7 @@ def get_pets_all(response:Response,current_user: str = Depends(get_current_user)
 
 
 @animal_root.put("/pets/editing/{id}",responses={204: {"model": None}},response_model=create_animal_base)
-def put_pets_id(id: int, animal: create_animal_base,response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+def put_pets_id(id: int, animal: create_animal_base,response:Response,db: Session = Depends(get_db)):
     
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
@@ -132,7 +130,6 @@ def put_pets_id(id: int, animal: create_animal_base,response:Response,current_us
             get_data_animal.location = animal.location
             get_data_animal.status = animal.status
             db.commit()
-            response.headers["Authorization"] = f"{current_user}"
             return Response(status_code=status.HTTP_204_NO_CONTENT)
         
     except Exception as e:

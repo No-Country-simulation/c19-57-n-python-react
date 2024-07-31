@@ -20,7 +20,6 @@ def get_db():
 def create_application(
     post:create_application_base,
     response:Response,
-    current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     try:
@@ -28,7 +27,6 @@ def create_application(
         application = ApplicationModel(**post.model_dump())
         db.add(application)
         db.commit()
-        response.headers["Authorization"]= f"{current_user}"
         return application
     
     except SQLAlchemyError as e:
@@ -46,19 +44,17 @@ def create_application(
 
 
 @appli_root.get("/pets/application/{application_id}", response_model=create_application_base)
-def read_application(application_id: int,response:Response,current_user:str = Depends(get_current_user), db: Session = Depends(get_db)):
+def read_application(application_id: int,response:Response,db: Session = Depends(get_db)):
     application = db.query(ApplicationModel).filter(ApplicationModel.id == application_id).first()
     if application is None:
         raise HTTPException(status_code=404, detail="Application not found")
-    response.headers["Authorization"]= f"{current_user}"
     return application 
 
 @appli_root.get("/pets/application/email/{email}", response_model=create_application_base)
-def read_application_by_email(email: str, response:Response,current_user:str = Depends(get_current_user),db: Session = Depends(get_db)):
+def read_application_by_email(email: str, response:Response,db: Session = Depends(get_db)):
     application = db.query(ApplicationModel).filter(ApplicationModel.email == email).first()
     if application is None:
         raise HTTPException(status_code=404, detail="Application not found")
-    response.headers["Authorization"]= f"{current_user}"
     return application
 
 
