@@ -15,6 +15,13 @@ import NotFound from './pages/NotFound.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import DogsList from './components/DogsList.jsx'
 import CatsList from './components/CatsList.jsx'
+import Admin from './pages/Admin/index.jsx'
+import AdminPets from './components/dashboard/AdminPets.jsx'
+import AdminRequests from './components/dashboard/AdminRequests.jsx'
+import AdminEditRequestById from './components/dashboard/AdminEditRequestById.jsx'
+import AdminRequestById from './components/dashboard/AdminRequestById.jsx'
+import AdminCreatePet from './components/dashboard/AdminCreatePet.jsx'
+import AdminEditPet from './components/dashboard/AdminEditPet.jsx'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +66,34 @@ const router = createBrowserRouter([
       {
         path: '/cats',
         element: <CatsList />
+      },
+      {
+        path: '/admin',
+        element: <ProtectedRoute element={<Admin />} />
+      },
+      {
+        path: '/admin/pets',
+        element: <ProtectedRoute element={<AdminPets />} />
+      },
+      {
+        path: '/admin/pets/add',
+        element: <ProtectedRoute element={<AdminCreatePet />} />
+      },
+      {
+        path: '/admin/pets/edit/:id',
+        element: <ProtectedRoute element={<AdminEditPet />} />
+      },
+      {
+        path: '/admin/requests',
+        element: <ProtectedRoute element={<AdminRequests />} />
+      },
+      {
+        path: '/admin/requests/edit/:id',
+        element: <ProtectedRoute element={<AdminEditRequestById />} />
+      },
+      {
+        path: '/admin/requests/:id',
+        element: <ProtectedRoute element={<AdminRequestById />} />
       }
     ]
   },
