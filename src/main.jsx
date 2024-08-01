@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import DogsList from './components/DogsList.jsx'
 import CatsList from './components/CatsList.jsx'
+import PetDetails from './pages/PetDetails.jsx'
 import Admin from './pages/Admin/index.jsx'
 import AdminPets from './components/dashboard/AdminPets.jsx'
 import AdminRequests from './components/dashboard/AdminRequests.jsx'
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: '/cats',
         element: <CatsList />
+      },
+      {
+        path: '/petdetails',
+        element: <PetDetails />
       },
       {
         path: '/admin',
