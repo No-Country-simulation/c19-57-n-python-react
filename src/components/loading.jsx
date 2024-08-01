@@ -1,9 +1,13 @@
-import { Spinner } from "@material-tailwind/react";
+import { Spinner } from '@material-tailwind/react'
 
-export function Loading() {
-    return (
-        <div className="flex items-center justify-center h-screen">
-            <Spinner className="h-16 w-16 animate-spin text-blue-900/50" />
-        </div> // Esto es un comentario
-    );
+export function Loading({ height }) {
+  return (
+    <div
+      className={`flex items-center justify-center ${
+        height ? height : 'h-screen'
+      }`}
+    >
+      <Spinner className='h-16 w-16 animate-spin text-pink-default' />
+    </div> // Esto es un comentario
+  )
 }

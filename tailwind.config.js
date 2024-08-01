@@ -44,6 +44,9 @@ export default {
       },
       borderWidth: {
         'border-8': '14px'
+      },
+      screens: {
+        md: '744px'
       }
     }
   },

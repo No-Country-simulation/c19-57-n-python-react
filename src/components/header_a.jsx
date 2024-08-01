@@ -2,6 +2,7 @@ import { useState } from 'react'
 import logo from '/logo.svg'
 import burger from '/Burger.svg'
 import { Link } from 'react-router-dom'
+import useToken from '../hooks/useToken'
 
 const ROUTES = [
   {
@@ -22,8 +23,39 @@ const ROUTES = [
   }
 ]
 
+const PROTECTED_ROUTES = [
+  {
+    name: 'Inicio',
+    url: '/'
+  },
+  {
+    name: 'Adopción perros',
+    url: '/dogs'
+  },
+  {
+    name: 'Adopción gatos',
+    url: '/cats'
+  },
+  {
+    name: 'Iniciar sesión',
+    url: '/login'
+  },
+  {
+    name: 'Dashboard',
+    url: '/admin'
+  }
+]
+
 const StickyNavbar = () => {
   const [isNavVisible, setNavVisible] = useState(false)
+  const { token } = useToken()
+  let CURRENT_ROUTES = ROUTES
+
+  if (token) {
+    CURRENT_ROUTES = PROTECTED_ROUTES
+  } else {
+    CURRENT_ROUTES = ROUTES
+  }
 
   const toggleNav = () => {
     setNavVisible(!isNavVisible)
@@ -41,7 +73,7 @@ const StickyNavbar = () => {
         <img className='max-w-20' src={burger} alt='menu icon' />
       </button>
       <nav
-        className={`w-full z-10 absolute top-0 right-0 bottom-0 bg-pink-default text-black p-8 shadow-md transition-all duration-300 ease-in-out ${
+        className={`w-full z-10 fixed top-0 right-0 bottom-0 bg-pink-default text-black p-8 shadow-md transition-all duration-300 ease-in-out ${
           isNavVisible ? 'opacity-100 visible' : 'opacity-0 invisible'
         } md:static md:flex md:items-center md:gap-4 md:p-0 md:bg-transparent md:shadow-none md:opacity-100 md:visible`}
         id='nav'
@@ -53,7 +85,7 @@ const StickyNavbar = () => {
           <span className='w-20 text-3xl'>X</span>
         </button>
         <ul className='w-full h-full items-center md:justify-end justify-center list-none flex flex-col lg:gap-8 gap-[60px] md:flex-row md:items-center md:gap-4'>
-          {ROUTES.map((item) => (
+          {CURRENT_ROUTES.map((item) => (
             <li key={item.name}>
               <Link
                 to={item.url}

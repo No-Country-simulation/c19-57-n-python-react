@@ -4,6 +4,7 @@ import useToken from '../hooks/useToken'
 /* import { useNavigate } from 'react-router-dom' */
 import PetCard from './PetCard'
 import pets from '../../data.json'
+import { Loading } from './loading'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -15,9 +16,11 @@ const ListPets = () => {
   const { token } = useToken()
   const [error, setError] = useState({})
   /* const navigate = useNavigate() */
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true)
       try {
         const response = await fetch(`${API_URL}/pets/all/`, {
           method: 'GET',
@@ -42,13 +45,16 @@ const ListPets = () => {
 
         const savedData = localStorage.getItem('pets')
         const parsedSavedData = savedData ? JSON.parse(savedData) : null
+        setLoading(false)
 
         if (JSON.stringify(data) !== JSON.stringify(parsedSavedData)) {
           setData(data)
           localStorage.setItem('pets', JSON.stringify(data))
         }
       } catch (err) {
+        setData(pets)
         setError({ ...error, apiError: err.message })
+        setLoading(false)
       }
     }
 
@@ -70,7 +76,8 @@ const ListPets = () => {
             id={pet.id || 0}
           />
         ))}
-      {error.apiError && (
+      {loading && <Loading height={'h-16'} />}
+      {error.apiError && !data && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
       )}
     </div>

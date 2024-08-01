@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { validatePetRegisterForm } from '../utils'
 import useToken from '../hooks/useToken'
+import InputComponent from './InputComponent'
+import Button from './Button'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-const PET_TYPE = ['Seleccionar', 'perro', 'gato']
-const PET_GENDER = ['Seleccionar', 'masculino', 'femenino']
+const PET_TYPE = ['perro', 'gato']
+const PET_GENDER = ['masculino', 'femenino']
 
 const PetForm = () => {
   const [values, setValues] = useState({
@@ -23,7 +24,6 @@ const PetForm = () => {
   const [imagenProfile, setImagenProfile] = useState(null)
   const [imagenDetails, setImagenDetails] = useState([])
   const [error, setError] = useState({})
-  const navigate = useNavigate()
   const { token } = useToken()
 
   const handleChange = (e) => {
@@ -77,9 +77,6 @@ const PetForm = () => {
         if (response.ok) {
           const data = await response.json()
           console.log('Response:', data)
-
-          //aca deberia redirigir hacia algun otro lado
-          navigate('/')
         } else {
           setError({
             ...error,
@@ -97,150 +94,106 @@ const PetForm = () => {
   }
 
   return (
-    <form className='flex flex-col items-center gap-2' onSubmit={handleSubmit}>
-      <div>
-        <label>Nombre:</label>
-        <input
-          type='text'
-          name='name'
-          placeholder='Ej: Pipo'
-          value={values.name}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.name && (
-          <p className='mt-2 text-red-600 text-sm'>{error.name}</p>
-        )}
-      </div>
+    <form
+      className='flex flex-col xl:flex-row w-full xl:flex-wrap 2xl:justify-center 2xl:gap-[30px] 2xl:mt-20 gap-5'
+      onSubmit={handleSubmit}
+    >
+      <InputComponent
+        label={'Nombre'}
+        placeholder={'Ej: Pipo'}
+        name={'name'}
+        value={values.name}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.name}
+      />
 
-      <div>
-        <label htmlFor='gender'>¿Que tipo de animal es?</label>
-        <select
-          name='animalType'
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        >
-          {PET_TYPE.map((item) => (
-            <option key={item} value={item}>
-              {item.toUpperCase()}
-            </option>
-          ))}
-        </select>
-        {error.animalType && (
-          <p className='mt-2 text-red-600 text-sm'>{error.animalType}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'¿Qué tipo de animal es?'}
+        name={'animalType'}
+        value={values.animalType}
+        handleChange={handleChange}
+        type={'select'}
+        options={PET_TYPE}
+        error={error.animalType}
+      />
 
-      <div>
-        <label>Raza:</label>
-        <input
-          type='text'
-          name='race'
-          placeholder='Ej: Dogo, Siamés'
-          value={values.race}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.race && (
-          <p className='mt-2 text-red-600 text-sm'>{error.race}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'Raza'}
+        placeholder={'Ej: Dogo, Siamés'}
+        name={'race'}
+        value={values.race}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.race}
+      />
 
-      <div>
-        <label>Edad: </label>
-        <input
-          type='number'
-          name='year'
-          placeholder='Ej: 2'
-          value={values.year}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.year && (
-          <p className='mt-2 text-red-600 text-sm'>{error.year}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'Edad'}
+        placeholder={'Ej: 2'}
+        name={'year'}
+        value={values.year}
+        handleChange={handleChange}
+        type={'number'}
+        error={error.year}
+      />
 
-      <div>
-        <label>¿Cual es su historial?</label>
-        <input
-          type='text'
-          name='history'
-          placeholder='Ej: Pipo fue abandonado por su familia...'
-          value={values.history}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.history && (
-          <p className='mt-2 text-red-600 text-sm'>{error.history}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'¿Cuál es su historial?'}
+        placeholder={'Ej: Pipo fue abandonado por su familia...'}
+        name={'history'}
+        value={values.history}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.history}
+      />
 
-      <div>
-        <label htmlFor='gender'>Género:</label>
-        <select
-          name='gender'
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        >
-          {PET_GENDER.map((item) => (
-            <option key={item} value={item}>
-              {item.toUpperCase()}
-            </option>
-          ))}
-        </select>
-        {error.gender && (
-          <p className='mt-2 text-red-600 text-sm'>{error.gender}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'Género'}
+        name={'gender'}
+        value={values.gender}
+        handleChange={handleChange}
+        type={'select'}
+        options={PET_GENDER}
+        error={error.gender}
+      />
 
-      <div>
-        <label>Tamaño (cm):</label>
-        <input
-          type='number'
-          name='size'
-          placeholder='Ej: 24'
-          value={values.size}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.size && (
-          <p className='mt-2 text-red-600 text-sm'>{error.size}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'Tamaño (cm)'}
+        placeholder={'Ej: 24'}
+        name={'size'}
+        value={values.size}
+        handleChange={handleChange}
+        type={'number'}
+        error={error.size}
+      />
 
-      <div>
-        <label>Características:</label>
-        <input
-          type='text'
-          name='characteristics'
-          placeholder='Ej: Pipo tiene los ojos claros, una mancha negra detrás de la oreja...'
-          value={values.characteristics}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.characteristics && (
-          <p className='mt-2 text-red-600 text-sm'>{error.characteristics}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'Características'}
+        placeholder={
+          'Ej: Pipo tiene los ojos claros, una mancha negra detrás de la oreja...'
+        }
+        name={'characteristics'}
+        value={values.characteristics}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.characteristics}
+      />
 
-      <div>
-        <label>Ubicación:</label>
-        <input
-          type='text'
-          name='location'
-          placeholder='Ej: Buenos Aires, Argentina o Santiago, Chile, etc'
-          value={values.location}
-          onChange={handleChange}
-          className='rounded-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-        />
-        {error.location && (
-          <p className='mt-2 text-red-600 text-sm'>{error.location}</p>
-        )}
-      </div>
+      <InputComponent
+        label={'Ubicación'}
+        placeholder={'Ej: Buenos Aires, Argentina o Santiago, Chile, etc'}
+        name={'location'}
+        value={values.location}
+        handleChange={handleChange}
+        type={'text'}
+        error={error.location}
+      />
 
-      <div>
-        <label>Foto</label>
+      <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
+        <label className='font-medium' htmlFor='imagenProfile'>
+          Foto
+        </label>
         <input
           type='file'
           name='imagenProfile'
@@ -249,16 +202,18 @@ const PetForm = () => {
       file:mr-4 file:py-2 file:px-4
       file:rounded-full file:border-0
       file:text-sm file:font-semibold
-      file:bg-violet-50 file:text-violet-700
-      hover:file:bg-violet-100
+      file:bg-blue-light file:text-blue-800
+      hover:file:bg-blue-darker
     '
         />
         {error.imagenProfile && (
           <p className='mt-2 text-red-600 text-sm'>{error.imagenProfile}</p>
         )}
       </div>
-      <div>
-        <label>Más fotos</label>
+      <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
+        <label className='font-medium' htmlFor='imagenDetails'>
+          Más fotos
+        </label>
         <input
           type='file'
           name='imagenDetails'
@@ -268,20 +223,22 @@ const PetForm = () => {
       file:mr-4 file:py-2 file:px-4
       file:rounded-full file:border-0
       file:text-sm file:font-semibold
-      file:bg-violet-50 file:text-violet-700
-      hover:file:bg-violet-100
+      file:bg-blue-light file:text-blue-800
+      hover:file:bg-blue-darker
     '
         />
         {error.imagenDetails && (
           <p className='mt-2 text-red-600 text-sm'>{error.imagenDetails}</p>
         )}
       </div>
-      <button
-        className='rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'
-        type='submit'
-      >
-        Registrar Mascota
-      </button>
+
+      <Button
+        textSize='large'
+        color='primary'
+        size='medium'
+        text='Agregar'
+        type={'submit'}
+      />
       {error.apiError && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
       )}

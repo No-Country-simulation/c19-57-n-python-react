@@ -81,7 +81,8 @@ const PetRequestForm = () => {
           id: 0,
           age: parseAge,
           create_at,
-          status_appli: 'pendiente'
+          status_appli: 'pendiente',
+          id_mascota: id
         }
 
         const response = await fetch(`${API_URL}/pets/application`, {
