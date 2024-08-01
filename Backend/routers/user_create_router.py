@@ -136,5 +136,20 @@ async def login(
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-
-
+@user_root.get("/auth", status_code=status.HTTP_200_OK)
+async def check_auth(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    try:
+        user = await get_current_user(token, db)
+        return {"message": "Token válido", "user": user.username}
+    except HTTPException as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token inválido",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

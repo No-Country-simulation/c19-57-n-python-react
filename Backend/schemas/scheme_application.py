@@ -21,6 +21,7 @@ class create_application_base(BaseModel):
     another_pet: str
     another_pet_desc: Optional[str]
     status_appli: str
+    id_mascota: int
 
     class Config:
         from_attributes = True

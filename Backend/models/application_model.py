@@ -1,6 +1,7 @@
-from sqlalchemy import Table, Column, Enum, Date
+from sqlalchemy import Table, Column, Enum, Date,ForeignKey
 from sqlalchemy.sql.sqltypes import Integer, String
 from Backend.config.data_base import base
+from sqlalchemy.orm import relationship
 
 
 
@@ -24,3 +25,5 @@ class create_application(base):
     another_pet = Column(Enum('si', 'no'), nullable=False)
     another_pet_desc = Column(String(100), nullable=True)
     status_appli = Column(Enum('pendiente', 'aprobada', 'rechazada'), nullable=True)
+    id_mascota = Column(Integer, ForeignKey('mascota.id'), nullable=False)
+    mascota = relationship('create_animals', back_populates='applications')
