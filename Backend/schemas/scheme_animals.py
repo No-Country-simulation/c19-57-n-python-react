@@ -16,3 +16,5 @@ class create_animal_base(BaseModel): #Modelo POST
     characteristics: str
     location: str
     status: int
+    imagen_profile: str
+    imagen_details: str

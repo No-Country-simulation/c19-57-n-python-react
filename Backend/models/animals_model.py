@@ -1,10 +1,11 @@
 from sqlalchemy import Table, Column
 from sqlalchemy.sql.sqltypes import Integer, String
 from Backend.config.data_base import base
+from sqlalchemy.orm import relationship
 
 
 class create_animals(base):
-    __tablename__ = "animales"
+    __tablename__ = "mascota"
     id = Column(Integer, primary_key=True, autoincrement=True)
     create_at = Column(String(250), nullable=False)
     name = Column(String(250), nullable=False)
@@ -19,3 +20,4 @@ class create_animals(base):
     status = Column(Integer, nullable=False)
     imagen_profile = Column(String(250), nullable=False)
     imagen_details = Column(String(250), nullable=False)
+    applications = relationship('create_application', back_populates='mascota')

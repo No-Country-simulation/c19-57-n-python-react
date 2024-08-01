@@ -9,6 +9,10 @@ from typing import List
 from datetime import datetime
 from Backend.routers.user_create_router import get_current_user
 from traceback import print_exception
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 animals_model.base.metadata.create_all(bind=engine)
 animal_root = APIRouter()
@@ -44,8 +48,8 @@ async def register_pets(
     ):
     
     try:
-        IMEGEN_DIR = "imagenes/perfil/" 
-        IMEGEN_DIR2 = "imagenes/details/"
+        IMEGEN_DIR = os.getenv('IMEGEN_DIR')
+        IMEGEN_DIR2 = os.getenv('IMEGEN_DIR2')
         
         get_img_profile = imagen_profile.filename 
     
@@ -139,3 +143,21 @@ def put_pets_id(id: int, animal: create_animal_base,response:Response,current_us
         print_exception(e)
         return Response("Internal server error", status_code=500)   
 
+@animal_root.delete("/pets/delete/{id}", status_code=status.HTTP_200_OK)
+def delete_pets_id(id: int, response: Response, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        animal = db.query(create_animals).filter(create_animals.id == id).first()
+        
+        if animal is None:
+            raise HTTPException(status_code=404, detail="Pet not found")
+        
+        db.delete(animal)
+        db.commit()
+
+        response.headers["Authorization"] = f"{current_user}"
+        
+        return {"message": "Pet deleted successfully"}
+    
+    except Exception as e:
+        print_exception(e)
+        return Response("Internal server error", status_code=500)
