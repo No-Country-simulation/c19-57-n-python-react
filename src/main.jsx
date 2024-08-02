@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         element: <CatsList />
       },
       {
-        path: '/petdetails',
+        path: '/petdetails/:id',
         element: <PetDetails />
       },
       {
