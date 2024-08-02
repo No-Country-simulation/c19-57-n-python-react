@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useToken from "../hooks/useToken";
 import { ListPets } from "../components";
 
@@ -26,7 +26,7 @@ const PetDetails = () => {
 
   useEffect(() => {
     getPet();
-  }, [])
+  }, [id])
 
   return (
     pet && (
@@ -67,7 +67,7 @@ const PetDetails = () => {
         <div className="px-5 mb-[38px]">
           <h2 className="mb-3 font-medium text-blue-darker">Detalle</h2>
           <p className="mb-[38px] text-blue-darker">{pet.history}</p>
-          <button className="md:hidden bg-pink-default font-semibold py-2 w-full rounded-2xl">Quiero adoptar</button>
+          <Link to={`/petRequestForm/${id}`} className="md:hidden bg-pink-default font-semibold py-2 w-full rounded-2xl block text-center">Quiero adoptar</Link>
         </div>
         <h2 className="font-medium text-xl text-center mb-[44px]">Mascotas relacionadas</h2>
         <ListPets />
