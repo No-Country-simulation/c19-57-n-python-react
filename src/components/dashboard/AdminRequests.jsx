@@ -2,8 +2,16 @@ import { useEffect, useState } from 'react'
 import TitleComponent from '../TitleComponent'
 import useToken from '../../hooks/useToken'
 import { Link } from 'react-router-dom'
-import { IconParkSolidBack } from '../Icons'
+import {
+  IconParkSolidBack,
+  InfoIcon,
+  PendingIcon,
+  TickIcon,
+  XIcon
+} from '../Icons'
 import { Loading } from '../loading'
+import TrashIcon from '/Trash.svg'
+import EditIcon from '/PencilSquare.svg'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -20,24 +28,36 @@ const AdminRowComponent = ({ item, handleDelete, petData }) => {
 
   return (
     <>
-      <tr className='text-sm text-center'>
-        <td>{item.email}</td>
-        <td>{petName}</td>
-        <td>
-          <span className={`rounded border-[1px] px-1 ${statusClassname}`}>
-            {item.status_appli}
-          </span>
+      <tr className='text-xs md:text-base'>
+        <td className='text-start max-w-16'>
+          {item.name} {item.last_name}
         </td>
-        <td className='flex justify-around'>
-          <Link to={`/admin/requests/${item.id}`}>👁</Link>
-          <Link to={`/admin/requests/edit/${item.id}`}>✏</Link>
+        <td className='text-center'>{petName}</td>
+        <td className='text-center'>
+          <div className='flex justify-center'>
+            {item.status_appli === 'pendiente' ? (
+              <PendingIcon title='Pendiente' />
+            ) : item.status_appli === 'aprobada' ? (
+              <TickIcon title='Aprobada' />
+            ) : (
+              <XIcon title='Rechazada' />
+            )}
+          </div>
+        </td>
+        <td className='flex justify-around h-[34px] items-center'>
+          <Link to={`/admin/requests/${item.id}`}>
+            <InfoIcon />
+          </Link>
+          <Link to={`/admin/requests/edit/${item.id}`}>
+            <img src={EditIcon} alt='Edit Icon' />
+          </Link>
           <button
             className='text-red-500'
             onClick={() => {
               handleDelete(item)
             }}
           >
-            🗑
+            <img src={TrashIcon} alt='Trash Icon' />
           </button>
         </td>
       </tr>
@@ -125,14 +145,16 @@ const AdminRequests = () => {
       <Link className='absolute top-2 left-2 w-36' to={'/admin'} title='Atras'>
         <IconParkSolidBack />
       </Link>
-      <TitleComponent title={'Solicitudes de Adopción'} />
+      <TitleComponent title={'Solicitudes de Adopción'} color={true} />
       <div className='flex justify-between items-center px-4 mb-3'>
-        <h3 className='text-xl font-semibold'>Solicitudes</h3>
+        <h3 className='text-blue-darker text-xl font-medium px-4 md:px-[50px] w-full text-center'>
+          Solicitudes cargadas
+        </h3>
       </div>
-      <table className='table-auto w-full border-separate border-spacing-y-1'>
+      <table className='table-auto text-blue-darker w-full px-4 md:px-[50px] border-separate border-spacing-y-3'>
         <thead>
           <tr>
-            <th className='pointer'>Email</th>
+            <th className='pointer text-start'>Nombre</th>
             <th className='pointer'>Mascota</th>
             <th className='pointer'>Estado</th>
             <th>Acciones</th>

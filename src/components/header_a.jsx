@@ -1,21 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from '/logo.svg'
 import burger from '/Burger.svg'
 import { Link } from 'react-router-dom'
-import useToken from '../hooks/useToken'
+import LogoutButton from './LogoutButton'
+import { useAuth } from '../context/AuthContext'
 
 const ROUTES = [
   {
-    name: 'Inicio',
-    url: '/'
+    name: 'Consultar Solicitud',
+    url: '/search/adoptionForm'
   },
   {
-    name: 'Adopción perros',
-    url: '/dogs'
-  },
-  {
-    name: 'Adopción gatos',
-    url: '/cats'
+    name: 'Sobre Nosotros',
+    url: '/about'
   },
   {
     name: 'Iniciar sesión',
@@ -25,37 +22,38 @@ const ROUTES = [
 
 const PROTECTED_ROUTES = [
   {
-    name: 'Inicio',
-    url: '/'
+    name: 'Consultar Solicitud',
+    url: '/search/adoptionForm'
   },
   {
-    name: 'Adopción perros',
-    url: '/dogs'
-  },
-  {
-    name: 'Adopción gatos',
-    url: '/cats'
-  },
-  {
-    name: 'Iniciar sesión',
-    url: '/login'
+    name: 'Sobre Nosotros',
+    url: '/about'
   },
   {
     name: 'Dashboard',
     url: '/admin'
+  },
+  {
+    name: 'Cerrar Sesion',
+    url: ''
   }
 ]
 
 const StickyNavbar = () => {
   const [isNavVisible, setNavVisible] = useState(false)
-  const { token } = useToken()
-  let CURRENT_ROUTES = ROUTES
+  const { userAuth, isLoading } = useAuth()
+  const [currentRoutes, setCurrentRoutes] = useState(ROUTES)
 
-  if (token) {
-    CURRENT_ROUTES = PROTECTED_ROUTES
-  } else {
-    CURRENT_ROUTES = ROUTES
-  }
+  useEffect(() => {
+    console.log(userAuth)
+    console.log(isLoading)
+
+    if (userAuth) {
+      setCurrentRoutes(PROTECTED_ROUTES)
+    } else {
+      setCurrentRoutes(ROUTES)
+    }
+  }, [userAuth])
 
   const toggleNav = () => {
     setNavVisible(!isNavVisible)
@@ -85,15 +83,19 @@ const StickyNavbar = () => {
           <span className='w-20 text-3xl'>X</span>
         </button>
         <ul className='w-full h-full items-center md:justify-end justify-center list-none flex flex-col lg:gap-8 gap-[60px] md:flex-row md:items-center md:gap-4'>
-          {CURRENT_ROUTES.map((item) => (
+          {currentRoutes.map((item) => (
             <li key={item.name}>
-              <Link
-                to={item.url}
-                onClick={toggleNav}
-                className='text-xl md:font-medium font-semibold text-black no-underline'
-              >
-                {item.name}
-              </Link>
+              {item.url === '' ? (
+                <LogoutButton />
+              ) : (
+                <Link
+                  to={item.url}
+                  onClick={toggleNav}
+                  className='flex w-full text-center text-xl md:font-medium font-semibold text-black no-underline'
+                >
+                  {item.name}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

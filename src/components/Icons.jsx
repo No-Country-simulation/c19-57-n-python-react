@@ -35,3 +35,67 @@ export function IconPrinter() {
     </svg>
   )
 }
+
+export function InfoIcon() {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='17px'
+      height='17px'
+      viewBox='0 0 20 20'
+    >
+      <path
+        fill='#ffa765'
+        d='M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07m12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32M9 11V9h2v6H9zm0-6h2v2H9z'
+      />
+    </svg>
+  )
+}
+
+export function TickIcon() {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='17px'
+      height='17px'
+      viewBox='0 0 512 512'
+    >
+      <path
+        fill='#65a30d'
+        d='M437.3 30L202.7 339.3L64 200.7l-64 64L213.3 478L512 94z'
+      />
+    </svg>
+  )
+}
+
+export function PendingIcon() {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='20px'
+      height='20px'
+      viewBox='0 0 23 24'
+    >
+      <path
+        fill='#666666'
+        d='M7 13.5q.625 0 1.063-.437T8.5 12t-.437-1.062T7 10.5t-1.062.438T5.5 12t.438 1.063T7 13.5m5 0q.625 0 1.063-.437T13.5 12t-.437-1.062T12 10.5t-1.062.438T10.5 12t.438 1.063T12 13.5m5 0q.625 0 1.063-.437T18.5 12t-.437-1.062T17 10.5t-1.062.438T15.5 12t.438 1.063T17 13.5M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22'
+      />
+    </svg>
+  )
+}
+
+export function XIcon() {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='22px'
+      height='22px'
+      viewBox='0 0 24 24'
+    >
+      <path
+        fill='#e11d48'
+        d='M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z'
+      />
+    </svg>
+  )
+}

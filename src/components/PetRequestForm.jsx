@@ -148,7 +148,7 @@ const PetRequestForm = () => {
     >
       <TitleComponent title={'Solicitud de Adopción'} />
 
-      <div className='flex flex-col 2xl:flex-row w-full 2xl:flex-wrap 2xl:justify-center 2xl:gap-[30px]'>
+      <div className='flex flex-col 2xl:flex-row w-full 2xl:flex-wrap 2xl:justify-center 2xl:gap-[30px] gap-5'>
         <InputComponent
           label={'¿A quien quieres adoptar?'}
           placeholder={'Nombre de mascota'}
@@ -337,10 +337,12 @@ const PetRequestForm = () => {
         type={'submit'}
       />
       {error.apiError && (
-        <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
+        <p className='mt-2 px-[18px] md:px-[50px] text-red-600 text-sm'>
+          {error.apiError}
+        </p>
       )}
       {success && (
-        <p className='text-green-500'>
+        <p className='text-green-500 px-[18px] md:px-[50px]'>
           Solicitud enviada... será redirigido en breve al inicio
         </p>
       )}

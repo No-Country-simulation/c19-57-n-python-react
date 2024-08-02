@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import PetCard from './PetCard'
@@ -6,13 +7,15 @@ import { Loading } from './loading'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-const ListPets = () => {
+const PetRelatedList = ({ type, id }) => {
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem('pets')
     return savedData ? JSON.parse(savedData) : null
   })
   const [error, setError] = useState({})
   const [loading, setLoading] = useState(false)
+
+  const [filteredData, setFilteredData] = useState(data)
 
   useEffect(() => {
     async function fetchData() {
@@ -41,6 +44,16 @@ const ListPets = () => {
           setData(data)
           localStorage.setItem('pets', JSON.stringify(data))
         }
+
+        const filteredDataByType = data.filter(
+          (pet) =>
+            pet.animal_type.toLowerCase() === type.toLowerCase() &&
+            pet.id !== id
+        )
+
+        const shuffledData = filteredDataByType.sort(() => 0.5 - Math.random())
+        const randomPets = shuffledData.slice(0, 3)
+        setFilteredData(randomPets)
       } catch (err) {
         setData(pets)
         setError({ ...error, apiError: err.message })
@@ -54,7 +67,7 @@ const ListPets = () => {
   return (
     <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-fit mx-auto'>
       {data &&
-        data.map((pet, index) => (
+        filteredData.map((pet, index) => (
           <PetCard
             key={index}
             nombre={pet.name || pet.nombre}
@@ -74,4 +87,4 @@ const ListPets = () => {
   )
 }
 
-export default ListPets
+export default PetRelatedList

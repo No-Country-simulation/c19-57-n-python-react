@@ -46,7 +46,7 @@ export default {
         'border-8': '14px'
       },
       screens: {
-        md: '744px'
+        md: '745px'
       }
     }
   },

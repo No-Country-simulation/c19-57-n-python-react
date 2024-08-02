@@ -4,34 +4,27 @@ import useToken from '../../hooks/useToken'
 import { Loading } from '../loading'
 import { Link } from 'react-router-dom'
 import { IconParkSolidBack } from '../Icons'
+import TrashIcon from '/Trash.svg'
+import EditIcon from '/PencilSquare.svg'
 
 const API_URL = import.meta.env.VITE_API_URL
 const PET_STATUS = ['Pendiente', 'Aprobado', 'Rechazada']
 
 const PetComponent = ({ pet, handleDelete }) => {
-  const statusClassname =
-    pet.status === 0
-      ? 'border-blue-default text-blue-default'
-      : pet.status === 1
-      ? 'border-green-500 text-green-500'
-      : 'border-red-500 text-red-500'
+  const [day, month, year] = pet.create_at.split('-')
+  const yearFormatted = year.slice(-2)
+  const dateFormatted = `${day}/${month}/${yearFormatted}`
   return (
     <>
-      <tr className='text-sm text-center'>
-        <td>
-          <div>
-            <p>{pet.name}</p>
-          </div>
+      <tr className='text-xs md:text-base'>
+        <td>{pet.name}</td>
+        <td className='text-center'>{dateFormatted}</td>
+        <td className='text-center'>
+          {pet.animal_type.charAt(0).toUpperCase() + pet.animal_type.slice(1)}
         </td>
-        <td>{pet.create_at}</td>
-        <td>
-          <span className={`rounded border-[1px] px-1 ${statusClassname}`}>
-            {PET_STATUS[pet.status]}
-          </span>
-        </td>
-        <td className='flex justify-around'>
+        <td className='flex justify-center gap-5'>
           <Link to={`/admin/pets/edit/${pet.id}`} className='text-blue-800'>
-            ✏
+            <img src={EditIcon} alt='Edit Icon' />
           </Link>
           <button
             onClick={() => {
@@ -39,7 +32,7 @@ const PetComponent = ({ pet, handleDelete }) => {
             }}
             className='text-red-500'
           >
-            🗑
+            <img src={TrashIcon} alt='Trash Icon' />
           </button>
         </td>
       </tr>
@@ -135,23 +128,28 @@ const AdminPets = () => {
       <Link className='absolute top-2 left-2 w-36' to={'/admin'} title='Atras'>
         <IconParkSolidBack />
       </Link>
-      <TitleComponent title={'Mascotas'} />
-      <div className='flex justify-between items-center px-4 mb-3'>
-        <h3 className='text-xl font-semibold'>Mascotas</h3>
+      <TitleComponent title={'Mascotas'} color={true} />
+      <div className='flex flex-col justify-between items-center px-4 md:px-[50px] mt-11 text-blue-darker'>
+        <h3 className='text-xl font-medium mb-9 md:text-[22px]'>
+          ¿Rescataste un nuevo animal?
+        </h3>
         <Link
           to={'/admin/pets/add'}
-          className='h-8 rounded-md text-blue-darker font-semibold bg-[#fde4d1] hover:bg-[#ffd4b3] py-1 px-[50px] sm:px-[78px] 2xl:px-[130px]'
+          className='h-11 md:w-[357px] w-full text-center text-xl content-center mb-11 rounded-md font-semibold bg-[#fde4d1] hover:bg-[#ffd4b3] py-1 px-[50px] sm:px-[78px] 2xl:px-[130px]'
         >
-          Agregar
+          Agregar mascotas
         </Link>
+        <h3 className='mb-6 pt-6 text-xl font-medium border-t px-4 md:px-[50px] w-full text-center'>
+          Mascotas Cargadas
+        </h3>
       </div>
-      <table className='table-auto w-full border-separate border-spacing-y-1'>
+      <table className='table-auto text-blue-darker w-full px-4 md:px-[50px] border-separate border-spacing-y-3'>
         <thead>
-          <tr>
-            <th className='pointer'>Nombre</th>
-            <th className='pointer'>Creado</th>
-            <th className='pointer'>Estado</th>
-            <th>Acciones</th>
+          <tr className='text-sm md:text-lg font-medium'>
+            <th className='pointer text-start'>Nombre</th>
+            <th className='pointer'>Fecha</th>
+            <th className='pointer'>Animal</th>
+            <th>Modificar</th>
           </tr>
         </thead>
         <tbody>

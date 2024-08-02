@@ -3,6 +3,7 @@ import { validatePetRegisterForm } from '../utils'
 import useToken from '../hooks/useToken'
 import InputComponent from './InputComponent'
 import Button from './Button'
+import { useNavigate } from 'react-router-dom'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -25,6 +26,9 @@ const PetForm = () => {
   const [imagenDetails, setImagenDetails] = useState([])
   const [error, setError] = useState({})
   const { token } = useToken()
+  const [success, setSuccess] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setValues({
@@ -44,6 +48,8 @@ const PetForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    setSuccess(false)
+    setError({})
 
     if (
       validatePetRegisterForm(values, imagenProfile, imagenDetails, setError)
@@ -75,8 +81,11 @@ const PetForm = () => {
         })
 
         if (response.ok) {
-          const data = await response.json()
-          console.log('Response:', data)
+          await response.json()
+          setSuccess(true)
+          setTimeout(() => {
+            navigate('/')
+          }, 2000)
         } else {
           setError({
             ...error,
@@ -241,6 +250,11 @@ const PetForm = () => {
       />
       {error.apiError && (
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
+      )}
+      {success && (
+        <p className='text-green-500 px-[18px] md:px-[50px]'>
+          Mascota Registrada... Será redirigido en breve al inicio
+        </p>
       )}
     </form>
   )
