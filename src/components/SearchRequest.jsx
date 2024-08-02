@@ -34,7 +34,7 @@ const SearchRequest = () => {
     }
   }
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='flex flex-col items-center justify-center mb-80'>
       <TitleComponent title={'Consultar Estado de Solicitud'} />
       <form
         className='flex items-center rounded-[14px] border-[1px] border-[#435B71] px-[20px] py-3 sm:w-96 -mt-12 bg-[#ffff] gap-3 mx-3'

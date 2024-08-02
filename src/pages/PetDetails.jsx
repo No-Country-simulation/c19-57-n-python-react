@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ListPets } from '../components'
+import PetRelatedList from '../components/PetRelatedList'
 
 const IMG_FOLDER_URL = import.meta.env.VITE_IMG_FOLDER_URL
 const API_URL = import.meta.env.VITE_API_URL
@@ -125,7 +126,7 @@ const PetDetails = () => {
         <h2 className='font-medium text-xl text-center mb-[44px]'>
           Mascotas relacionadas
         </h2>
-        <ListPets />
+        <PetRelatedList type={pet.animal_type} id={pet.id} />
       </div>
     )
   )
