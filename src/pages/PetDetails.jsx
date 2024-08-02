@@ -48,7 +48,7 @@ const PetDetails = () => {
               <p className="font-semibold flex flex-col items-center text-[14px] md:text-[20px] gap-1 md:flex-row md:font-normal">
                 <img className="md:inline mr-2" src="/caracter.svg" alt="Caracter Icon" />
                 <span className="md:font-semibold uppercase text-[10px] md:text-xl">Carácter<span className="hidden md:inline">:</span> </span>
-                {pet.characteristics}
+                {pet.characteristics.split(',')[0]}
               </p>
               <p className="font-semibold flex flex-col items-center text-[14px] md:text-[20px] gap-1 md:flex-row md:font-normal">
                 <img className="md:inline mr-2" src="/size.svg" alt="Size Icon" />
