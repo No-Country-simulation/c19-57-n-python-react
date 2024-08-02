@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import useToken from '../hooks/useToken'
-/* import { useNavigate } from 'react-router-dom' */
 import PetCard from './PetCard'
 import pets from '../../data.json'
 import { Loading } from './loading'
@@ -13,9 +11,7 @@ const ListPets = () => {
     const savedData = localStorage.getItem('pets')
     return savedData ? JSON.parse(savedData) : null
   })
-  const { token } = useToken()
   const [error, setError] = useState({})
-  /* const navigate = useNavigate() */
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -26,15 +22,9 @@ const ListPets = () => {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           }
         })
-
-        if (response.statusText === 'Unauthorized') {
-          console.log('Unauthorized')
-          /* navigate('/login') */
-        }
 
         if (!response.ok) {
           setData(pets)

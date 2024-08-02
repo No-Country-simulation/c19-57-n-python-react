@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import TitleComponent from './TitleComponent'
-import useToken from '../hooks/useToken'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -8,9 +7,7 @@ const SearchRequest = () => {
   const [search, setSearch] = useState('')
   const [data, setData] = useState()
   const [error, setError] = useState()
-  const { token } = useToken()
 
-  //por ahora solo funciona introduciendo ids
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
@@ -21,8 +18,7 @@ const SearchRequest = () => {
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Content-Type': 'application/json'
         }
       })
 
@@ -59,7 +55,7 @@ const SearchRequest = () => {
           </svg>
         </button>
         <input
-          className='placeholder-[#435B71] outline-none'
+          className='placeholder-[#435B71] outline-none w-full'
           type='text'
           placeholder='Search'
           value={search}
@@ -69,7 +65,7 @@ const SearchRequest = () => {
       {data && !error && (
         <div className='flex flex-col gap-1 text-xl mt-5'>
           <h3>
-            NOMBRE :{data.name.toUpperCase()} {data.last_name.toUpperCase()}
+            NOMBRE: {data.name.toUpperCase()} {data.last_name.toUpperCase()}
           </h3>
           <p>ESTADO: {data.status_appli}</p>
         </div>

@@ -1,13 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import useToken from '../hooks/useToken'
+import { useAuth } from '../context/AuthContext'
 
 const LogoutButton = ({ styles }) => {
   const navigate = useNavigate()
   const { deleteToken } = useToken()
+  const { setUserAuth } = useAuth()
 
   const handleClick = () => {
     deleteToken()
-    navigate('/')
+    setUserAuth(false)
+    navigate('/', { replace: true })
   }
 
   return (
@@ -17,10 +20,10 @@ const LogoutButton = ({ styles }) => {
       className={`${
         styles
           ? styles
-          : 'rounded-md p-1.5 bg-blue-600 text-white hover:bg-blue-900'
+          : 'text-xl md:font-medium font-semibold text-black no-underline'
       }`}
     >
-      Logout
+      Cerrar Sesion
     </button>
   )
 }

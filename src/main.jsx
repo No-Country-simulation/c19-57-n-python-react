@@ -23,10 +23,15 @@ import AdminEditRequestById from './components/dashboard/AdminEditRequestById.js
 import AdminRequestById from './components/dashboard/AdminRequestById.jsx'
 import AdminCreatePet from './components/dashboard/AdminCreatePet.jsx'
 import AdminEditPet from './components/dashboard/AdminEditPet.jsx'
+import AuthProvider from './context/AuthContext.jsx'
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: (
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    ),
     children: [
       {
         path: '/',
@@ -50,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/petRequestForm/:id',
-        element: <ProtectedRoute element={<PetRequestForm />} />
+        element: <PetRequestForm />
       },
       {
         path: '/pets/edit/:id',

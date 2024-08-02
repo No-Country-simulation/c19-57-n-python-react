@@ -5,13 +5,13 @@ const IMG_FOLDER_URL = import.meta.env.VITE_IMG_FOLDER_URL
 const PetCard = ({ nombre, sexo, edad, tamaño, caracter, imagen, id }) => {
   return (
     <div className='rounded-[14px] overflow-hidden shadow-[0_0_25px_0_#0000001A] pb-[37px] flex flex-col w-full max-w-[357px] md:max-w-[202px] lg:max-w-[281px] mx-auto'>
-      <Link className='bg-[#F9D7BD] h-[265px] w-full rounded-b-[14px]'>
+      <div className='bg-[#F9D7BD] h-[265px] w-full rounded-b-[14px]'>
         <img
           className='w-full h-full rounded-b-[14px]'
           src={`${IMG_FOLDER_URL}/perfil/${imagen}`}
           alt={`Imagen de ${nombre}`}
         />
-      </Link>
+      </div>
       <div className='px-7 text-[18px] text-[#002140] md:flex md:flex-col flex-grow justify-between'>
         <div>
           <h2 className='text-center text-[18px] font-medium mt-[15px] mb-3'>

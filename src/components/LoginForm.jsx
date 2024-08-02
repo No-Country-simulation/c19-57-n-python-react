@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import TitleComponent from './TitleComponent'
 import InputComponent from './InputComponent'
 import Button from './Button'
+import { useAuth } from '../context/AuthContext'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -16,6 +17,8 @@ const LoginForm = () => {
   const [error, setError] = useState({})
 
   const { setToken, deleteToken } = useToken()
+
+  const { setUserAuth } = useAuth()
 
   const navigate = useNavigate()
 
@@ -67,9 +70,10 @@ const LoginForm = () => {
         const data = await response.json()
         setToken(data.access_token)
         setSuccess('Exito! Será redirigido en breve.')
+        setUserAuth(true)
 
         //redirige al home al estar logeado
-        navigate('/')
+        navigate('/', { replace: true })
       } catch (error) {
         console.error(error)
         setError({ ...error, apiError: error.message })

@@ -44,7 +44,7 @@ const InputComponent = ({
                 value={item}
                 checked={value === item}
                 onChange={handleChange}
-                className='text-indigo-600 focus:ring-indigo-600 !checked:bg-[#f9d7bd]'
+                className='p-3.5 my-2 text-indigo-600 focus:ring-indigo-600 !checked:bg-[#f9d7bd]'
               />
               {item.charAt(0).toUpperCase() + item.slice(1)}
             </label>
