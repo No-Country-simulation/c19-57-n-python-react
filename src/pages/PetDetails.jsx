@@ -78,7 +78,7 @@ const PetDetails = () => {
                 <span className='md:font-semibold uppercase text-[10px] md:text-xl'>
                   Carácter<span className='hidden md:inline'>:</span>{' '}
                 </span>
-                {decodeURIComponent(pet.characteristics)}
+                {pet.characteristics.split(',')[0]}
               </p>
               <p className='font-semibold flex flex-col items-center text-[14px] md:text-[20px] gap-1 md:flex-row md:font-normal'>
                 <img
@@ -116,7 +116,7 @@ const PetDetails = () => {
           <p className='mb-[38px] text-blue-darker'>{pet.history}</p>
           <Link
             to={`/petRequestForm/${id}`}
-            className='md:hidden bg-pink-default font-semibold py-2 w-full rounded-2xl'
+            className='md:hidden bg-pink-default font-semibold py-2 w-full rounded-2xl block text-center'
           >
             Quiero adoptar
           </Link>
