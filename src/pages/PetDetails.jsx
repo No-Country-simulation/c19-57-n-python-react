@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ListPets } from '../components'

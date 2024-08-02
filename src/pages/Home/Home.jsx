@@ -1,17 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Hero, SearchBar } from '../../components'
-/* import pets from '../../../data.json' */
 import ListPets from '../../components/ListPets'
 
 const PetFilterCard = ({ src, title, href }) => {
   return (
     <div className=' flex flex-col rounded-[14px] overflow-hidden mt-[25px] shadow-[0_0_25px_0_#0000001A] pb-8'>
-      <Link className='bg-[#D6E4E8] grow w-[357px] h-[399px] md:w-[311px] md:h-[348px] lg:w-[446px] lg:h-[501px]' to={href}>
-        <img
-          className='w-full h-full object-contain'
-          src={src}
-          alt={title}
-        />
+      <Link
+        className='bg-[#D6E4E8] grow w-[357px] h-[399px] md:w-[311px] md:h-[348px] lg:w-[446px] lg:h-[501px]'
+        to={href}
+      >
+        <img className='w-full h-full object-contain' src={src} alt={title} />
       </Link>
       <h3 className='text-center text-[18px] pt-5'>{title}</h3>
     </div>
