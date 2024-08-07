@@ -8,7 +8,7 @@ const buttonStyles = {
   sizes: {
     small: 'py-1 px-[50px] sm:px-[78px] 2xl:px-[130px]',
     medium:
-      'py-2 w-[357px] 2xl:w-[584px] 2xl:w-[714px] px-[18px] md:px-[50px] 2xl:mx-40',
+      'py-2 w-[357px] 2xl:w-[584px] 2xl:w-[714px] px-[18px] md:px-[50px] 2xl:mx-60',
     large: 'py-2 px-[100px] sm:px-[147px] 2xl:px-[260.5px]',
     login: 'py-2 w-full'
   },

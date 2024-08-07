@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ListPets } from '../components'
 import PetRelatedList from '../components/PetRelatedList'
 
 const IMG_FOLDER_URL = import.meta.env.VITE_IMG_FOLDER_URL
@@ -40,6 +39,10 @@ const PetDetails = () => {
     }
   }
 
+  const handleImageError = (event) => {
+    event.target.src = `http://localhost:8000/static/imagenes/perfil/${pet.imagen_profile}`
+  }
+
   useEffect(() => {
     getPet()
   }, [id])
@@ -56,6 +59,7 @@ const PetDetails = () => {
               className='m-auto'
               src={`${IMG_FOLDER_URL}/perfil/${pet.imagen_profile}`}
               alt='Pet image'
+              onError={handleImageError}
             />
           </div>
           <div className='capitalize flex w-full px-[20px] pb-5 mb-6 md:mb-0 md:flex-col md:w-1/2 md:pr-[50px]'>
