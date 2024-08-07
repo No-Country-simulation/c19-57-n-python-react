@@ -41,19 +41,12 @@ const PetComponent = ({ pet, handleDelete }) => {
 }
 
 const AdminPets = () => {
-  const [data, setData] = useState(() => {
-    const savedData = localStorage.getItem('pets')
-    return savedData ? JSON.parse(savedData) : []
-  })
+  const [data, setData] = useState([])
   const [error, setError] = useState()
   const [loading, setLoading] = useState(false)
   const [currentPet, setCurrentPet] = useState()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const { token } = useToken()
-
-  if (data.length === 0) {
-    setData([])
-  }
 
   const handleDelete = (pet) => {
     setCurrentPet(pet)
@@ -106,13 +99,8 @@ const AdminPets = () => {
 
         const data = await response.json()
 
-        const savedData = localStorage.getItem('pets')
-        const parsedSavedData = savedData ? JSON.parse(savedData) : null
+        setData(data)
 
-        if (JSON.stringify(data) !== JSON.stringify(parsedSavedData)) {
-          setData(data)
-          localStorage.setItem('pets', JSON.stringify(data))
-        }
         setLoading(false)
       } catch (err) {
         setError(err.message)
@@ -121,7 +109,7 @@ const AdminPets = () => {
     }
 
     fetchData()
-  }, [data])
+  }, [])
 
   return (
     <div className='relative'>
@@ -135,7 +123,7 @@ const AdminPets = () => {
         </h3>
         <Link
           to={'/admin/pets/add'}
-          className='h-11 md:w-[357px] w-full text-center text-xl content-center mb-11 rounded-md font-semibold bg-[#fde4d1] hover:bg-[#ffd4b3] py-1 px-[50px] sm:px-[78px] 2xl:px-[130px]'
+          className='h-11 md:w-[357px] w-full text-center text-xl content-center mb-11 rounded-md font-semibold bg-[#fde4d1] hover:bg-[#ffd4b3] py-1 px-0'
         >
           Agregar mascotas
         </Link>
@@ -155,13 +143,18 @@ const AdminPets = () => {
         <tbody>
           {loading && data.length === 0 && <Loading height={'h-16'} />}
           {error && <span>{error}</span>}
-          {data.map((item) => (
-            <PetComponent
-              pet={item}
-              key={item.id}
-              handleDelete={handleDelete}
-            />
-          ))}
+          {data.length <= 0 && <span>No hay resultados</span>}
+          {data.length > 0 && (
+            <>
+              {data.map((item) => (
+                <PetComponent
+                  pet={item}
+                  key={item.id}
+                  handleDelete={handleDelete}
+                />
+              ))}
+            </>
+          )}
         </tbody>
       </table>
       {confirmDelete && (

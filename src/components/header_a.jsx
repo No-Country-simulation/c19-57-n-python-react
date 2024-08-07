@@ -4,6 +4,7 @@ import burger from '/Burger.svg'
 import { Link } from 'react-router-dom'
 import LogoutButton from './LogoutButton'
 import { useAuth } from '../context/AuthContext'
+import useToken from '../hooks/useToken'
 
 const ROUTES = [
   {
@@ -41,16 +42,15 @@ const PROTECTED_ROUTES = [
 
 const StickyNavbar = () => {
   const [isNavVisible, setNavVisible] = useState(false)
-  const { userAuth, isLoading } = useAuth()
+  const { userAuth } = useAuth()
+  const { deleteToken } = useToken()
   const [currentRoutes, setCurrentRoutes] = useState(ROUTES)
 
   useEffect(() => {
-    console.log(userAuth)
-    console.log(isLoading)
-
     if (userAuth) {
       setCurrentRoutes(PROTECTED_ROUTES)
     } else {
+      deleteToken()
       setCurrentRoutes(ROUTES)
     }
   }, [userAuth])

@@ -72,10 +72,7 @@ const AdminRequests = () => {
   const [currentRequest, setCurrentRequest] = useState()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const { token } = useToken()
-  const [petData, setPetData] = useState(() => {
-    const savedData = localStorage.getItem('pets')
-    return savedData ? JSON.parse(savedData) : []
-  })
+  const [petData, setPetData] = useState([])
 
   const handleDelete = (pet) => {
     setCurrentRequest(pet)
@@ -161,14 +158,19 @@ const AdminRequests = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <AdminRowComponent
-              key={item.id}
-              item={item}
-              handleDelete={handleDelete}
-              petData={petData}
-            />
-          ))}
+          {data.length <= 0 && <span>No hay resultados</span>}
+          {data.length > 0 && (
+            <>
+              {data.map((item) => (
+                <AdminRowComponent
+                  key={item.id}
+                  item={item}
+                  handleDelete={handleDelete}
+                  petData={petData}
+                />
+              ))}
+            </>
+          )}
         </tbody>
       </table>
       {error && <span>{error}</span>}
