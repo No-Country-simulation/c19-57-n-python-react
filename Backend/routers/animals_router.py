@@ -23,7 +23,7 @@ def get_db():
     try:
         yield db
     finally:
-        db.close
+        db.close()
 
 now = datetime.now()  
 
@@ -50,6 +50,8 @@ async def register_pets(
     try:
         IMEGEN_DIR = os.getenv('IMEGEN_DIR')
         IMEGEN_DIR2 = os.getenv('IMEGEN_DIR2')
+        print(IMEGEN_DIR)
+        print(IMEGEN_DIR2)
         
         get_img_profile = imagen_profile.filename 
     
@@ -91,13 +93,12 @@ async def register_pets(
 
 
 @animal_root.get("/pets/{id}",status_code=status.HTTP_200_OK,response_model=create_animal_base)
-def get_pets_id(id: int,response: Response,current_user:str = Depends(get_current_user),db: Session = Depends(get_db)):
+def get_pets_id(id: int,response: Response,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).filter(create_animals.id == id).first()
         if get_data_animal is None:
             return {"message":"ID is not registered"}
         else:
-            response.headers["Authorization"] = f"{current_user}"
             return get_data_animal
     
     except Exception as e:
@@ -106,10 +107,9 @@ def get_pets_id(id: int,response: Response,current_user:str = Depends(get_curren
 
 
 @animal_root.get("/pets/all/",status_code= status.HTTP_200_OK)
-def get_pets_all(response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+def get_pets_all(response:Response,db: Session = Depends(get_db)):
     try:
         get_data_animal = db.query(create_animals).all()
-        response.headers["Authorization"] = f"{current_user}"
         return get_data_animal
 
     except Exception as e:
