@@ -42,7 +42,6 @@ base = declarative_base()
 uvicorn Backend.main:main_app --reload
 ```
 
-
 ### Application design
 
 The application is based on the RESTful (Representational State Transfer) architectural model, which performs operations on resources:
@@ -54,13 +53,11 @@ The application is based on the RESTful (Representational State Transfer) archit
 
 ![Design](readme/design-api.png)
 
-
 #### Model Database
 
 It is an entity-relationship model
 
 ![Database](readme/model-database.png)
-
 
 ### Migration in FastAPI
 
@@ -91,6 +88,7 @@ alembic revision --autogenerate -m "Cambiar nombre de columna"
 ```
 
 **Execute migration:**
+
 ```bash
 alembic upgrade head
 ```
