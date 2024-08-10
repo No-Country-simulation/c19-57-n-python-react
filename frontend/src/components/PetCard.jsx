@@ -15,6 +15,10 @@ const PetCard = ({ nombre, sexo, edad, tamaño, caracter, imagen, id }) => {
     }
   }
 
+  const handleImageError = (event) => {
+    event.target.src = `/pet_not_found.png`
+  }
+
   return (
     <div className='rounded-[14px] overflow-hidden shadow-[0_0_25px_0_#0000001A] pb-[37px] flex flex-col w-full max-w-[357px] md:max-w-[202px] lg:max-w-[281px] mx-auto'>
       <div className='bg-[#F9D7BD] h-[265px] w-full rounded-b-[14px]'>
@@ -22,6 +26,7 @@ const PetCard = ({ nombre, sexo, edad, tamaño, caracter, imagen, id }) => {
           className='w-full h-full rounded-b-[14px]'
           src={`${IMG_FOLDER_URL}/perfil/${imagen}`}
           alt={`Imagen de ${nombre}`}
+          onError={handleImageError}
         />
       </div>
       <div className='px-7 text-[18px] text-[#002140] md:flex md:flex-col flex-grow justify-between'>

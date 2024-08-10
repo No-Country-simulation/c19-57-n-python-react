@@ -5,6 +5,7 @@ import TitleComponent from './TitleComponent'
 import InputComponent from './InputComponent'
 import Button from './Button'
 import { useAuth } from '../context/AuthContext'
+import { Loading } from './loading'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -23,6 +24,8 @@ const LoginForm = () => {
   const navigate = useNavigate()
 
   const [success, setSuccess] = useState(null)
+
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setValues({
@@ -51,6 +54,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const body = new URLSearchParams({
       username: values.username,
@@ -67,19 +71,31 @@ const LoginForm = () => {
           },
           body
         })
-        const data = await response.json()
-        setToken(data.access_token)
-        setSuccess('Exito! Será redirigido en breve.')
-        setUserAuth(true)
-
-        //redirige al home al estar logeado
-        navigate('/', { replace: true })
+        if (response.ok) {
+          setLoading(false)
+          const data = await response.json()
+          setToken(data.access_token)
+          setSuccess('Logueado Exitosamente! Será redirigido en breve.')
+          setUserAuth(true)
+          setTimeout(() => {
+            navigate('/', { replace: true })
+          }, 2000)
+        } else {
+          setLoading(false)
+          setError({
+            ...error,
+            apiError: `Error al Iniciar sesion: ${response.statusText}`
+          })
+          console.error(response.statusText)
+        }
       } catch (error) {
-        console.error(error)
+        setLoading(false)
         setError({ ...error, apiError: error.message })
         deleteToken()
       }
     } else {
+      setLoading(false)
+
       console.error('Ocurrio un error')
     }
   }
@@ -125,6 +141,7 @@ const LoginForm = () => {
         <p className='mt-2 text-red-600 text-sm'>{error.apiError}</p>
       )}
       {success && <p className='mt-2 text-green-600 text-sm'>{success}</p>}
+      {loading && <Loading height={'h-16'} />}
     </form>
   )
 }

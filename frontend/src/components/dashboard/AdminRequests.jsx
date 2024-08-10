@@ -19,13 +19,6 @@ const AdminRowComponent = ({ item, handleDelete, petData }) => {
   const currentPet = petData.filter((pet) => pet.id === item.id_mascota)
   const petName = currentPet[0].name
 
-  const statusClassname =
-    item.status_appli === 'pendiente'
-      ? 'border-blue-default text-blue-default'
-      : item.status_appli === 'aprobada'
-      ? 'border-green-500 text-green-500'
-      : 'border-red-500 text-red-500'
-
   return (
     <>
       <tr className='text-xs md:text-base'>
@@ -72,10 +65,7 @@ const AdminRequests = () => {
   const [currentRequest, setCurrentRequest] = useState()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const { token } = useToken()
-  const [petData, setPetData] = useState(() => {
-    const savedData = localStorage.getItem('pets')
-    return savedData ? JSON.parse(savedData) : []
-  })
+  const [petData, setPetData] = useState([])
 
   const handleDelete = (pet) => {
     setCurrentRequest(pet)
@@ -161,14 +151,19 @@ const AdminRequests = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <AdminRowComponent
-              key={item.id}
-              item={item}
-              handleDelete={handleDelete}
-              petData={petData}
-            />
-          ))}
+          {data.length <= 0 && <span>No hay resultados</span>}
+          {data.length > 0 && (
+            <>
+              {data.map((item) => (
+                <AdminRowComponent
+                  key={item.id}
+                  item={item}
+                  handleDelete={handleDelete}
+                  petData={petData}
+                />
+              ))}
+            </>
+          )}
         </tbody>
       </table>
       {error && <span>{error}</span>}

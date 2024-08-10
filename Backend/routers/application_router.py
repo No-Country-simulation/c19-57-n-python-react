@@ -18,13 +18,11 @@ def get_db():
     try:
         yield db
     finally:
-        db.close
+        db.close()
 
 @appli_root.post("/pets/application", status_code=status.HTTP_201_CREATED)
 def create_application(
     post:create_application_base,
-    response:Response,
-    current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     try:
@@ -32,7 +30,6 @@ def create_application(
         application = ApplicationModel(**post.model_dump())
         db.add(application)
         db.commit()
-        response.headers["Authorization"]= f"{current_user}"
         return application
     
     except SQLAlchemyError as e:
@@ -50,21 +47,18 @@ def create_application(
 
 
 @appli_root.get("/pets/application/{application_id}", response_model=create_application_base)
-def read_application(application_id: int,response:Response,current_user:str = Depends(get_current_user), db: Session = Depends(get_db)):
+def read_application(application_id: int,db: Session = Depends(get_db)):
     application = db.query(ApplicationModel).filter(ApplicationModel.id == application_id).first()
     if application is None:
         raise HTTPException(status_code=404, detail="Application not found")
-    response.headers["Authorization"]= f"{current_user}"
     return application 
 
 @appli_root.get("/pets/application/email/{email}", response_model=create_application_base)
-def read_application_by_email(email: str, response:Response,current_user:str = Depends(get_current_user),db: Session = Depends(get_db)):
+def read_application_by_email(email: str,db: Session = Depends(get_db)):
     application = db.query(ApplicationModel).filter(ApplicationModel.email == email).first()
     if application is None:
         raise HTTPException(status_code=404, detail="Application not found")
-    response.headers["Authorization"]= f"{current_user}"
     return application
-
 
 @appli_root.delete("/pets/application/{application_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_application(application_id: int,response:Response,current_user:str = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -78,10 +72,9 @@ def delete_application(application_id: int,response:Response,current_user:str = 
     return {"message": "Application deleted successfully"}
 
 @appli_root.get("/pets/application/all/",status_code= status.HTTP_200_OK)
-def get_application_all(response:Response,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+def get_application_all(db: Session = Depends(get_db)):
     try:
         get_data_application = db.query(ApplicationModel).all()
-        response.headers["Authorization"] = f"{current_user}"
         return get_data_application
 
     except Exception as e:
@@ -91,6 +84,8 @@ def get_application_all(response:Response,current_user: str = Depends(get_curren
 def update_application(
     application_id: int,
     updated_application: UpdateApplicationBase,
+    response: Response,
+    current_user:str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     try:
@@ -105,6 +100,7 @@ def update_application(
         
         db.commit()
         db.refresh(existing_application)
+        response.headers["Authorization"]= f"{current_user}"
         
         # Convierte el objeto SQLAlchemy a un diccionario
         return UpdateApplicationBase(**existing_application.__dict__)
