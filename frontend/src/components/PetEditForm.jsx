@@ -3,12 +3,13 @@ import useToken from '../hooks/useToken'
 import { useParams } from 'react-router-dom'
 import InputComponent from './InputComponent'
 import Button from './Button'
+import { Loading } from './loading'
 
 const PET_TYPE = ['perro', 'gato']
 const PET_GENDER = ['masculino', 'femenino']
 
 const API_URL = import.meta.env.VITE_API_URL
-const IMG_FOLDER_URL = import.meta.env.VITE_IMG_FOLDER_URL
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
 
 const PetEditForm = () => {
   const [values, setValues] = useState({
@@ -31,6 +32,8 @@ const PetEditForm = () => {
   const { id } = useParams()
   const [error, setError] = useState({})
   const { token } = useToken()
+  const [loadingProfileImage, setLoadingProfileImage] = useState(false)
+  const [loadingDetailsImage, setLoadingDetailsImage] = useState(false)
 
   const handleChange = (e) => {
     setValues({
@@ -39,42 +42,60 @@ const PetEditForm = () => {
     })
   }
 
-  const handleProfileFileChange = (event) => {
-    const file = event.target.files[0]
+  const uploadImage = async (file, preset) => {
+    const data = new FormData()
+    data.append('file', file)
+    data.append('upload_preset', preset)
 
-    if (file) {
-      const reader = new FileReader()
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: data
+        }
+      )
 
-      reader.onload = (e) => {
-        setProfileImage(e.target.result)
-        setValues({ ...values, imagen_profile: file.name })
-      }
-
-      reader.readAsDataURL(file)
+      const image = await response.json()
+      return image.secure_url
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      return null
     }
   }
 
-  const handleDetailsFileChange = (event) => {
-    const files = Array.from(event.target.files)
-    const imageUrls = []
-    const names = files.map((file) => file.name)
+  const handleProfileFileChange = async (event) => {
+    setLoadingProfileImage(true)
+    const file = event.target.files[0]
 
-    files.forEach((file) => {
-      const reader = new FileReader()
-
-      reader.onload = (e) => {
-        imageUrls.push({ name: file.name, url: e.target.result })
-        if (imageUrls.length === files.length) {
-          setDetailsImages(imageUrls)
-          const updatedImageNames = values.imagen_details
-            ? `${values.imagen_details},${names.join(',')}`
-            : names.join(',')
-          setValues({ ...values, imagen_details: updatedImageNames })
-        }
+    if (file) {
+      const url = await uploadImage(file, 'patitas_profile')
+      if (url) {
+        setProfileImage(url)
+        setValues({ ...values, imagen_profile: url })
       }
+    }
+    setLoadingProfileImage(false)
+  }
 
-      reader.readAsDataURL(file)
-    })
+  const handleDetailsFileChange = async (event) => {
+    setLoadingDetailsImage(true)
+    const files = Array.from(event.target.files)
+    const uploadedUrls = []
+
+    for (let file of files) {
+      const url = await uploadImage(file, 'patitas_details')
+      if (url) {
+        uploadedUrls.push(url)
+      }
+    }
+
+    setDetailsImages(uploadedUrls)
+    const updatedImageNames = values.imagen_details
+      ? `${values.imagen_details},${uploadedUrls.join(',')}`
+      : uploadedUrls.join(',')
+    setValues({ ...values, imagen_details: updatedImageNames })
+    setLoadingDetailsImage(false)
   }
 
   const handleSubmit = async (e) => {
@@ -87,8 +108,6 @@ const PetEditForm = () => {
     o este: 2024-07-13T01:37:00.629Z
      */
     const create_at = new Date().toISOString()
-
-    console.log(values.imagen_details)
 
     const body = JSON.stringify({
       ...values,
@@ -168,7 +187,7 @@ const PetEditForm = () => {
         <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
           <label className='font-medium'>Imagen de Perfil:</label>
           <img
-            src={`${IMG_FOLDER_URL}/perfil/${values.imagen_profile}`}
+            src={`${values.imagen_profile}`}
             alt='Imagen de perfil'
             className='size-36 rounded-2xl'
           />
@@ -184,6 +203,7 @@ const PetEditForm = () => {
           />
         </div>
       )}
+      {loadingProfileImage && <Loading height={'h-4'} />}
       <div className='text-start text-lg sm:text-[22px] flex flex-col gap-2 w-full 2xl:w-[714px] px-[18px] md:px-[50px]'>
         <label className='font-medium'>Subir nueva imagen de perfil:</label>
         <input
@@ -310,24 +330,27 @@ const PetEditForm = () => {
         <label className='font-medium'>Más fotos</label>
         {values.imagen_details && values.imagen_details.length > 0 && (
           <div>
-            <div className='flex flex-wrap'>
-              {[currentDetailsImages].map((item) => (
+            <div className='flex flex-wrap gap-2'>
+              {currentDetailsImages &&
+                currentDetailsImages
+                  .split(',')
+                  .map((item, index) => (
+                    <img
+                      src={item}
+                      alt={`Imagen extra ${index + 1}`}
+                      className='size-20 rounded-2xl'
+                      key={index}
+                    />
+                  ))}
+              {detailsImages.map((item, index) => (
                 <img
-                  src={`${IMG_FOLDER_URL}/details/${item}`}
-                  alt='Imagen extra'
+                  src={item}
+                  alt={`Imagen nueva ${index + 1}`}
                   className='size-20 rounded-2xl'
-                  key={item}
+                  key={index}
                 />
               ))}
-              {detailsImages &&
-                detailsImages.map((item) => (
-                  <img
-                    src={item.url}
-                    alt='Imagen extra'
-                    className='size-20 rounded-2xl'
-                    key={item.url}
-                  />
-                ))}
+              {loadingDetailsImage && <Loading height={'h-4'} />}
             </div>
           </div>
         )}
