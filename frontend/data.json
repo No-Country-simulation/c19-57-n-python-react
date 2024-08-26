@@ -5,7 +5,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Pequeño a mediano",
     "caracter": "Curioso, amigable y enérgico",
-    "animal_type": "Gato"
+    "animal_type": "Gato",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678598/y1jw9pwsq3t7ytq3bcqh.jpg"
   },
   {
     "nombre": "Pastor Alemán",
@@ -13,7 +14,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
     "caracter": "Inteligente, leal y protector",
-    "animal_type": "Perro"
+    "animal_type": "Perro",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678602/pic9nkh1v5rbns4kwyyh.jpg"
   },
   {
     "nombre": "Labrador Retriever",
@@ -21,7 +23,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
     "caracter": "Amigable, juguetón y obediente",
-    "animal_type": "Perro"
+    "animal_type": "Perro",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678601/juuystepqw7wwyn5bpun.jpg"
   },
   {
     "nombre": "Chihuahua",
@@ -29,7 +32,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Pequeño",
     "caracter": "Valiente, alerta y cariñoso",
-    "animal_type": "Perro"
+    "animal_type": "Perro",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678600/uim5yzcyh5fc9whc1cvl.jpg"
   },
   {
     "nombre": "Akita Inu",
@@ -37,7 +41,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Grande",
     "caracter": "Fiel, independiente y valiente",
-    "animal_type": "Perro"
+    "animal_type": "Perro",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678603/b3eo5ugulkegdt2afnsi.jpg"
   },
   {
     "nombre": "Bulldog",
@@ -45,7 +50,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
     "caracter": "Tranquilo, afectuoso y valiente",
-    "animal_type": "Perro"
+    "animal_type": "Perro",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678600/k4u69gihljsnll2cbmom.jpg"
   },
   {
     "nombre": "Golden Retriever",
@@ -53,7 +59,8 @@
     "edad": "Depende del individuo",
     "tamaño": "Mediano a grande",
     "caracter": "Amigable, inteligente y confiable",
-    "animal_type": "Perro"
+    "animal_type": "Perro",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678602/aczzhf5ol1tvjdjwi1ix.jpg"
   },
   {
     "nombre": "Poodle",
@@ -61,6 +68,7 @@
     "edad": "Depende del individuo",
     "tamaño": "Varía",
     "caracter": "Inteligente, activo y leal",
-    "animal_type": "Gato"
+    "animal_type": "Gato",
+    "imagen_profile": "https://res.cloudinary.com/db395v0wf/image/upload/v1724678597/ukkficlcpa5o1e4ufzgz.jpg"
   }
 ]

@@ -24,7 +24,7 @@ const PetCard = ({ nombre, sexo, edad, tamaño, caracter, imagen, id }) => {
       <div className='bg-[#F9D7BD] h-[265px] w-full rounded-b-[14px]'>
         <img
           className='w-full h-full rounded-b-[14px]'
-          src={`${IMG_FOLDER_URL}/perfil/${imagen}`}
+          src={`${imagen}`}
           alt={`Imagen de ${nombre}`}
           onError={handleImageError}
         />

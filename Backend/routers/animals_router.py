@@ -42,43 +42,46 @@ async def register_pets(
         characteristics: str = Form(...),
         location: str = Form(...),
         status: int = Form(...),
-        imagen_profile: UploadFile = File(...),
-        imagen_details: List[UploadFile] = File(...),
+        # imagen_profile: UploadFile = File(...),
+        # imagen_details: List[UploadFile] = File(...),
+        imagen_profile: str = Form(...),
+        imagen_details: List[str] = Form(...),
         db: Session = Depends(get_db),
     ):
     
     try:
         IMEGEN_DIR = os.getenv('IMEGEN_DIR')
         IMEGEN_DIR2 = os.getenv('IMEGEN_DIR2')
-        print(IMEGEN_DIR)
-        print(IMEGEN_DIR2)
         
-        get_img_profile = imagen_profile.filename 
+        # get_img_profile = imagen_profile.filename 
+        get_img_profile = imagen_profile 
     
-        extension_img_profile = get_img_profile.split(".")[1] 
+        # extension_img_profile = get_img_profile.split(".")[1] 
+        extension_img_profile = get_img_profile.split(".")[3] 
         
         lister = [] #
         
         for data in imagen_details:
-            lister.append(data.filename)
+            #lister.append(data.filename)
+            lister.append(data)
         
         if extension_img_profile == "png" or extension_img_profile == "jpeg" or extension_img_profile == "jpg":
             
             insert_animal = create_animals(create_at= create_at, name=name, animal_type=animal_type,
             race=race, year=year, history=history, gender=gender, size=size, characteristics=characteristics, location=location,
-            status=status, imagen_profile=get_img_profile, imagen_details=",".join(lister))
+            status=status, imagen_profile=get_img_profile, imagen_details=", ".join(lister))
             
-            content_img_profile = await imagen_profile.read()
+            #content_img_profile = await imagen_profile.read()
             
-            for data in imagen_details:
-                img_name = data.filename
-                read_image = await data.read()
-                
-                with open(f"{IMEGEN_DIR2}{img_name}", "wb") as f:
-                    f.write(read_image)
+            #for data in imagen_details:
+            #    img_name = data.filename
+            #    read_image = await data.read()
+            #    
+            #    with open(f"{IMEGEN_DIR2}{img_name}", "wb") as f:
+            #        f.write(read_image)
                     
-            with open(f"{IMEGEN_DIR}{get_img_profile}", "wb") as f:
-                f.write(content_img_profile)
+            #with open(f"{IMEGEN_DIR}{get_img_profile}", "wb") as f:
+            #    f.write(content_img_profile)
 
             db.add(insert_animal)
             db.commit()

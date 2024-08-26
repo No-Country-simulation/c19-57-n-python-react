@@ -4,8 +4,10 @@ import useToken from '../hooks/useToken'
 import InputComponent from './InputComponent'
 import Button from './Button'
 import { useNavigate } from 'react-router-dom'
+import { Loading } from './loading'
 
 const API_URL = import.meta.env.VITE_API_URL
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
 
 const PET_TYPE = ['perro', 'gato']
 const PET_GENDER = ['masculino', 'femenino']
@@ -27,6 +29,7 @@ const PetForm = () => {
   const [error, setError] = useState({})
   const { token } = useToken()
   const [success, setSuccess] = useState(false)
+  const [loadingImage, setLoadingImage] = useState(false)
 
   const navigate = useNavigate()
 
@@ -37,12 +40,49 @@ const PetForm = () => {
     })
   }
 
-  const handleFileChange = (event) => {
-    const { name, files } = event.target
+  const uploadImage = async (name, files, setState) => {
+    const data = new FormData()
+
+    data.append('file', files)
     if (name === 'imagenProfile') {
-      setImagenProfile(files[0])
+      data.append('upload_preset', 'patitas_profile')
     } else if (name === 'imagenDetails') {
-      setImagenDetails(files)
+      data.append('upload_preset', 'patitas_details')
+    }
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: data
+        }
+      )
+
+      const image = await response.json()
+
+      if (name === 'imagenDetails') {
+        setState((prevState) => [...prevState, image.secure_url])
+      } else {
+        setState(image.secure_url)
+      }
+
+      setLoadingImage(false)
+    } catch (error) {
+      console.log(error)
+      setLoadingImage(false)
+    }
+  }
+
+  const handleFileChange = async (event) => {
+    setLoadingImage(true)
+    const { name, files } = event.target
+
+    if (name === 'imagenProfile') {
+      uploadImage(name, files[0], setImagenProfile)
+    } else if (name === 'imagenDetails') {
+      for (let i = 0; i < files.length; i++) {
+        uploadImage(name, files[i], setImagenDetails)
+      }
     }
   }
 
@@ -215,6 +255,14 @@ const PetForm = () => {
       hover:file:bg-blue-darker
     '
         />
+        {loadingImage && !imagenProfile && <Loading height={'h-2'} />}
+        {imagenProfile && (
+          <img
+            className='w-20 h-20 rounded-2xl'
+            src={imagenProfile}
+            alt='Pet profile imagen uploaded'
+          />
+        )}
         {error.imagenProfile && (
           <p className='mt-2 text-red-600 text-sm'>{error.imagenProfile}</p>
         )}
@@ -236,6 +284,19 @@ const PetForm = () => {
       hover:file:bg-blue-darker
     '
         />
+        {loadingImage && imagenDetails.length > 0 && <Loading height={'h-2'} />}
+        {imagenDetails && (
+          <div className='flex gap-2'>
+            {imagenDetails.map((item) => (
+              <img
+                className='w-20 h-20 rounded-2xl'
+                key={item}
+                src={item}
+                alt={`image details ${item}`}
+              />
+            ))}
+          </div>
+        )}
         {error.imagenDetails && (
           <p className='mt-2 text-red-600 text-sm'>{error.imagenDetails}</p>
         )}
